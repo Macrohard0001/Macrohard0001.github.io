@@ -70,7 +70,7 @@
             color: white;
         }
 
-        .logo-icon img {
+        .logo-icon img, .footer-logo-icon img {
             width: 100%;
             height: 100%;
             border-radius: inherit;
@@ -97,6 +97,20 @@
             color: var(--primary-color);
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle, .hamburger {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
         /* 英雄区域 */
         .hero {
             background: linear-gradient(135deg, var(--primary-color), #6a11cb);
@@ -114,37 +128,6 @@
             font-size: 1.2rem;
             max-width: 600px;
             margin: 0 auto;
-        }
-
-        /* 优化状态指示器 */
-        .optimization-status {
-            background-color: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 8px;
-            padding: 12px 16px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .optimization-status i {
-            color: #10b981;
-            font-size: 1.2rem;
-        }
-
-        .optimization-info {
-            flex: 1;
-        }
-
-        .optimization-title {
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .optimization-desc {
-            font-size: 0.9rem;
-            color: #94a3b8;
         }
 
         /* 镜像选择器 */
@@ -175,11 +158,27 @@
             transition: all 0.3s;
         }
 
+        .mirror-selector select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+        }
+
+        .mirror-selector select:hover {
+            border-color: var(--primary-color);
+        }
+
         .mirror-info {
             margin-left: auto;
             font-size: 0.8rem;
             color: #94a3b8;
             display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .mirror-status {
+            display: inline-flex;
             align-items: center;
             gap: 5px;
         }
@@ -205,7 +204,7 @@
             50% { opacity: 0.5; }
         }
 
-        .test-button, .speed-test-button {
+        .test-button {
             background-color: var(--primary-color);
             color: white;
             border: none;
@@ -216,13 +215,141 @@
             transition: background-color 0.3s;
         }
 
+        .test-button:hover {
+            background-color: #3a5bd9;
+        }
+
+        .test-button:disabled {
+            background-color: #64748b;
+            cursor: not-allowed;
+        }
+
         .speed-test-button {
             background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
             margin-left: 5px;
         }
 
-        .test-button:hover, .speed-test-button:hover {
-            opacity: 0.9;
+        .speed-test-button:hover {
+            background-color: #0da271;
+        }
+
+        .speed-test-button:disabled {
+            background-color: #64748b;
+            cursor: not-allowed;
+        }
+
+        /* 测速结果面板 */
+        .speed-test-results {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .speed-test-results.active {
+            display: block;
+        }
+
+        .speed-test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .speed-test-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .speed-test-close {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .speed-test-results table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .speed-test-results th,
+        .speed-test-results td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .speed-test-results th {
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .speed-test-results tr:hover {
+            background-color: var(--hover-color);
+        }
+
+        .speed-rank {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .speed-rank-1 {
+            background-color: #f59e0b;
+        }
+
+        .speed-rank-2 {
+            background-color: #64748b;
+        }
+
+        .speed-rank-3 {
+            background-color: #a16207;
+        }
+
+        .speed-value {
+            font-weight: 500;
+        }
+
+        .speed-good {
+            color: #10b981;
+        }
+
+        .speed-medium {
+            color: #f59e0b;
+        }
+
+        .speed-slow {
+            color: #ef4444;
+        }
+
+        .recommended-badge {
+            display: inline-block;
+            background-color: #10b981;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-left: 5px;
         }
 
         /* 音乐库布局 */
@@ -232,23 +359,27 @@
             margin-bottom: 40px;
         }
 
-        .folders-panel, .songs-panel, .playlist-panel {
+        .folders-panel {
+            flex: 0 0 250px;
             background-color: var(--card-bg);
             border-radius: 10px;
             padding: 20px;
             height: fit-content;
         }
 
-        .folders-panel {
-            flex: 0 0 250px;
-        }
-
         .songs-panel {
             flex: 1;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
         }
 
         .playlist-panel {
             flex: 0 0 300px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
         }
 
         .panel-title {
@@ -350,6 +481,35 @@
             color: var(--primary-color);
         }
 
+        /* 播放列表 */
+        .playlist-items {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .playlist-item:hover {
+            background-color: var(--hover-color);
+        }
+
+        .playlist-item .song-info {
+            flex: 1;
+        }
+
+        .playlist-item .btn-remove {
+            color: #f87171;
+        }
+
         /* 播放器控制 */
         .player-controls {
             background-color: var(--card-bg);
@@ -398,7 +558,6 @@
             height: 100%;
             background-color: var(--primary-color);
             width: 0%;
-            transition: width 0.1s;
         }
 
         .time-info {
@@ -439,6 +598,130 @@
             font-size: 1.5rem;
         }
 
+        /* 音量控制 */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .volume-slider-container {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--card-bg);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 10;
+        }
+
+        .volume-control:hover .volume-slider-container {
+            display: block;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 5px;
+            -webkit-appearance: none;
+            background: var(--border-color);
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--card-bg);
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .footer-logo-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 70%;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
         /* 加载状态 */
         .loading {
             text-align: center;
@@ -453,18 +736,27 @@
 
         /* 缓存指示器 */
         .cache-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
             font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        .cache-indicator.cached {
             color: #10b981;
-            margin-left: 10px;
         }
 
         /* 响应式设计 */
         @media (max-width: 1024px) {
             .music-library {
                 flex-direction: column;
+            }
+            
+            .folders-panel, .playlist-panel {
+                flex: 1;
+            }
+
+            .footer-links {
+                width: 100%;
             }
         }
 
@@ -477,6 +769,14 @@
                 font-size: 2.2rem;
             }
             
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+            }
+            
             .mirror-selector {
                 flex-direction: column;
                 align-items: flex-start;
@@ -487,6 +787,10 @@
                 margin-left: 0;
                 width: 100%;
                 justify-content: space-between;
+            }
+
+            .speed-test-results table {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -508,6 +812,14 @@
                     <li><a href="music-library.html" class="active">在线曲库</a></li>
                     <li><a href="about_music.html">关于</a></li>
                 </ul>
+                <div class="nav-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="hamburger">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
@@ -520,20 +832,11 @@
         </div>
     </section>
 
+    <!-- 音乐库内容 -->
     <div class="container">
-        <!-- 优化状态指示器 -->
-        <div class="optimization-status">
-            <i class="fas fa-bolt"></i>
-            <div class="optimization-info">
-                <div class="optimization-title">优化模式已启用</div>
-                <div class="optimization-desc">智能缓存、预加载和镜像优化技术正在加速您的音乐体验</div>
-            </div>
-        </div>
-        
         <div class="mirror-selector">
             <label for="mirrorSelect">选择镜像站点:</label>
             <select id="mirrorSelect">
-                <option value="auto">自动选择 (推荐)</option>
                 <option value="default">默认站点</option>
                 <option value="jsdelivr">jsDelivr CDN</option>
                 <option value="githack">GitHack CDN</option>
@@ -545,9 +848,33 @@
                     <span class="status-dot" id="statusDot"></span>
                     <span id="statusText">就绪</span>
                 </span>
-                <button class="test-button" id="testMirrorBtn">测试</button>
-                <button class="speed-test-button" id="speedTestBtn">测速</button>
+                <button class="test-button" id="testMirrorBtn" title="测试当前镜像站">测试</button>
+                <button class="speed-test-button" id="speedTestBtn" title="测速所有镜像站">测速</button>
             </div>
+        </div>
+
+        <!-- 测速结果面板 -->
+        <div class="speed-test-results" id="speedTestResults">
+            <div class="speed-test-header">
+                <div class="speed-test-title">镜像站测速结果</div>
+                <button class="speed-test-close" id="speedTestClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>镜像站</th>
+                        <th>响应时间</th>
+                        <th>下载速度</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody id="speedTestResultsBody">
+                    <!-- 测速结果将在这里动态生成 -->
+                </tbody>
+            </table>
         </div>
         
         <div class="music-library">
@@ -596,7 +923,13 @@
                         <button class="btn" title="清空播放列表" id="clearPlaylist">
                             <i class="fas fa-trash"></i>
                         </button>
+                        <button class="btn" title="保存播放列表" id="savePlaylist">
+                            <i class="fas fa-save"></i>
+                        </button>
                     </div>
+                </div>
+                <div class="playlist-info">
+                    <p>当前播放列表: <span id="currentPlaylistName">默认</span></p>
                 </div>
                 <ul class="playlist-items" id="playlistItems">
                     <div class="loading">
@@ -618,6 +951,7 @@
                 <div class="current-song-info">
                     <div class="current-song-title" id="currentSongTitle">选择一首歌曲开始播放</div>
                     <div class="current-song-artist" id="currentSongArtist">-</div>
+                    <div class="cache-indicator" id="cacheIndicator"></div>
                 </div>
             </div>
             <div class="progress-container">
@@ -639,18 +973,80 @@
                 <button class="control-btn" title="下一首" id="nextBtn">
                     <i class="fas fa-step-forward"></i>
                 </button>
-                <button class="control-btn" title="缓存管理" id="cacheManagerBtn">
-                    <i class="fas fa-database"></i>
+                <div class="volume-control">
+                    <button class="control-btn" title="音量" id="volumeBtn">
+                        <i class="fas fa-volume-up" id="volumeIcon"></i>
+                    </button>
+                    <div class="volume-slider-container">
+                        <input type="range" min="0" max="100" value="100" class="volume-slider" id="volumeSlider">
+                    </div>
+                </div>
+                <button class="control-btn" title="预加载下一首" id="preloadBtn">
+                    <i class="fas fa-bolt" id="preloadIcon"></i>
                 </button>
             </div>
         </div>
     </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">
+                            <img src="https://github.com/Macrohard0001-m01/Macrohard0001-m01.github.io/blob/main/images/macrohard_icon_music.png?raw=true" alt="Macrohard Studio Logo">
+                        </div>
+                        Macrohard Studio
+                    </div>
+                    <p>高中生的小站</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>快速链接</h3>
+                        <ul>
+                            <li><a href="https://github.com/Macrohard0001-m01">个人主页</a></li>
+                            <li><a href="https://github.com/Macrohard0001-m01" target="_blank">GitHub</a></li>
+                            <li><a href="https://chat.deepseek.com/" target="_blank">DeepSeek</a></li>
+                            <li><a href="https://docs.lxmusic.top/" target="_blank">LX Music</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>作品</h3>
+                        <ul>
+                            <li><a href="software.html">AORE</a></li>
+                            <li><a href="software.html">RCP3</a></li>
+                            <li><a href="#">预留</a></li>
+                            <li><a href="">预留</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>联系信息</h3>
+                        <ul>
+                            <li><i class="fas fa-envelope"></i> Macrohard0001_m01@outlook.com</li>
+                            <li><i class="fas fa-map-marker-alt"></i> hbzzzx</li>
+                            <li><i class="fas fa-clock"></i> 我很忙~</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025-2026 Macrohard Studio. 保留所有权利。 | 网站正在编写与测试，勿喷，勿催</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // 配置
         const CONFIG = {
             // 曲库数据URL
             libraryUrl: 'https://raw.githubusercontent.com/Macrohard0001-m01/Macrohard0001-m01.github.io/main/data/music-library.json',
+            // 播放清单URL模板，{id}会被替换为播放清单ID
+            playlistUrlTemplate: 'https://raw.githubusercontent.com/Macrohard0001-m01/Macrohard0001-m01.github.io/main/data/playlists/{id}.json',
             // 镜像站点配置
             mirrors: {
                 default: {
@@ -673,12 +1069,6 @@
                     name: 'Cloudflare Pages',
                     baseUrl: 'https://macrohard0001-m01.pages.dev/music/'
                 }
-            },
-            // 缓存配置
-            cache: {
-                enabled: true,
-                maxSize: 50 * 1024 * 1024, // 50MB
-                preloadNext: true
             }
         };
 
@@ -693,102 +1083,13 @@
             volume: 1,
             audioElement: null,
             musicLibrary: null,
-            currentMirror: 'auto',
+            currentPlaylistId: null,
+            currentMirror: 'default',
             speedTestInProgress: false,
-            cacheManager: new CacheManager(),
-            preloadedSongs: new Set()
+            preloadEnabled: true,
+            audioCache: new Map(),
+            nextSongPreloaded: false
         };
-
-        // 缓存管理器
-        class CacheManager {
-            constructor() {
-                this.cacheName = 'music-cache-v1';
-                this.init();
-            }
-
-            async init() {
-                if (!('caches' in window)) {
-                    console.warn('浏览器不支持Cache API，缓存功能将不可用');
-                    return;
-                }
-
-                try {
-                    this.cache = await caches.open(this.cacheName);
-                    console.log('音乐缓存已初始化');
-                } catch (error) {
-                    console.error('初始化缓存失败:', error);
-                }
-            }
-
-            async cacheSong(url) {
-                if (!this.cache) return false;
-
-                try {
-                    const response = await fetch(url);
-                    if (response.ok) {
-                        await this.cache.put(url, response.clone());
-                        console.log('已缓存歌曲:', url);
-                        return true;
-                    }
-                } catch (error) {
-                    console.warn('缓存歌曲失败:', error);
-                }
-                return false;
-            }
-
-            async getCachedSong(url) {
-                if (!this.cache) return null;
-
-                try {
-                    const response = await this.cache.match(url);
-                    if (response) {
-                        console.log('从缓存加载歌曲:', url);
-                        return response;
-                    }
-                } catch (error) {
-                    console.warn('读取缓存失败:', error);
-                }
-                return null;
-            }
-
-            async clearCache() {
-                if (!this.cache) return;
-
-                try {
-                    const keys = await caches.keys();
-                    for (const key of keys) {
-                        if (key.startsWith('music-cache')) {
-                            await caches.delete(key);
-                        }
-                    }
-                    console.log('缓存已清空');
-                } catch (error) {
-                    console.error('清空缓存失败:', error);
-                }
-            }
-
-            async getCacheSize() {
-                if (!this.cache) return 0;
-
-                try {
-                    const keys = await this.cache.keys();
-                    let totalSize = 0;
-                    
-                    for (const request of keys) {
-                        const response = await this.cache.match(request);
-                        if (response) {
-                            const blob = await response.blob();
-                            totalSize += blob.size;
-                        }
-                    }
-                    
-                    return totalSize;
-                } catch (error) {
-                    console.error('计算缓存大小失败:', error);
-                    return 0;
-                }
-            }
-        }
 
         // DOM 元素
         const folderList = document.getElementById('folderList');
@@ -796,6 +1097,7 @@
         const playlistItems = document.getElementById('playlistItems');
         const currentFolder = document.getElementById('currentFolder');
         const playlistCount = document.getElementById('playlistCount');
+        const currentPlaylistName = document.getElementById('currentPlaylistName');
         const currentSongTitle = document.getElementById('currentSongTitle');
         const currentSongArtist = document.getElementById('currentSongArtist');
         const playPauseBtn = document.getElementById('playPauseBtn');
@@ -809,18 +1111,36 @@
         const playAllBtn = document.getElementById('playAll');
         const addAllToPlaylistBtn = document.getElementById('addAllToPlaylist');
         const clearPlaylistBtn = document.getElementById('clearPlaylist');
+        const savePlaylistBtn = document.getElementById('savePlaylist');
         const refreshFoldersBtn = document.getElementById('refreshFolders');
+        const volumeBtn = document.getElementById('volumeBtn');
+        const volumeIcon = document.getElementById('volumeIcon');
+        const volumeSlider = document.getElementById('volumeSlider');
         const mirrorSelect = document.getElementById('mirrorSelect');
         const statusDot = document.getElementById('statusDot');
         const statusText = document.getElementById('statusText');
         const testMirrorBtn = document.getElementById('testMirrorBtn');
         const speedTestBtn = document.getElementById('speedTestBtn');
-        const cacheManagerBtn = document.getElementById('cacheManagerBtn');
+        const speedTestResults = document.getElementById('speedTestResults');
+        const speedTestResultsBody = document.getElementById('speedTestResultsBody');
+        const speedTestClose = document.getElementById('speedTestClose');
+        const cacheIndicator = document.getElementById('cacheIndicator');
+        const preloadBtn = document.getElementById('preloadBtn');
+        const preloadIcon = document.getElementById('preloadIcon');
 
         // 初始化
         async function init() {
+            // 从URL参数获取播放清单ID
+            const urlParams = new URLSearchParams(window.location.search);
+            const playlistId = urlParams.get('playlist');
+            
             // 加载曲库数据
             await loadMusicLibrary();
+            
+            // 如果有播放清单参数，加载播放清单
+            if (playlistId) {
+                await loadPlaylist(playlistId);
+            }
             
             updatePlaylistCount();
             
@@ -835,15 +1155,20 @@
             playAllBtn.addEventListener('click', playAll);
             addAllToPlaylistBtn.addEventListener('click', addAllToPlaylist);
             clearPlaylistBtn.addEventListener('click', clearPlaylist);
+            savePlaylistBtn.addEventListener('click', savePlaylist);
             refreshFoldersBtn.addEventListener('click', refreshMusicData);
             progressBar.addEventListener('click', seek);
+            volumeSlider.addEventListener('input', updateVolume);
             mirrorSelect.addEventListener('change', changeMirror);
             testMirrorBtn.addEventListener('click', testCurrentMirror);
             speedTestBtn.addEventListener('click', startSpeedTest);
-            cacheManagerBtn.addEventListener('click', showCacheManager);
+            speedTestClose.addEventListener('click', closeSpeedTestResults);
+            preloadBtn.addEventListener('click', togglePreload);
             
-            // 初始测速
-            await startSpeedTest();
+            // 加载保存的设置
+            loadSavedPlaylist();
+            loadMirrorPreference();
+            loadPreloadSetting();
         }
 
         // 加载曲库数据
@@ -852,11 +1177,6 @@
                 const response = await fetch(CONFIG.libraryUrl);
                 state.musicLibrary = await response.json();
                 renderFolders();
-                
-                // 预加载第一首歌曲
-                if (state.musicLibrary.songs.length > 0) {
-                    preloadSong(state.musicLibrary.songs[0]);
-                }
             } catch (error) {
                 console.error('加载曲库失败:', error);
                 // 如果加载失败，使用内置的默认数据
@@ -865,67 +1185,332 @@
             }
         }
 
-        // 预加载歌曲
-        async function preloadSong(song) {
-            if (state.preloadedSongs.has(song.id)) return;
-            
-            const url = getSongUrl(song.url);
+        // 加载播放清单
+        async function loadPlaylist(playlistId) {
             try {
-                await state.cacheManager.cacheSong(url);
-                state.preloadedSongs.add(song.id);
-                console.log('预加载完成:', song.title);
-            } catch (error) {
-                console.warn('预加载失败:', song.title, error);
-            }
-        }
-
-        // 获取最佳镜像站
-        async function getBestMirror() {
-            const results = [];
-            
-            for (const [mirrorId, mirror] of Object.entries(CONFIG.mirrors)) {
-                if (mirrorId === 'default') continue;
+                const url = CONFIG.playlistUrlTemplate.replace('{id}', playlistId);
+                const response = await fetch(url);
+                const playlistData = await response.json();
                 
-                try {
-                    const testSongPath = '001/(It Goes Like) Nanana (Edit).mp3';
-                    const testSongUrl = mirror.baseUrl + testSongPath;
-                    
-                    const startTime = performance.now();
-                    const response = await fetch(testSongUrl, { method: 'HEAD' });
-                    const endTime = performance.now();
-                    
-                    if (response.ok) {
-                        results.push({
-                            id: mirrorId,
-                            name: mirror.name,
-                            responseTime: Math.round(endTime - startTime)
-                        });
-                    }
-                } catch (error) {
-                    console.warn(`镜像站 ${mirror.name} 测试失败:`, error);
+                // 根据播放清单中的歌曲ID，从曲库中获取完整的歌曲信息
+                state.playlist = playlistData.songs.map(songId => 
+                    state.musicLibrary.songs.find(song => song.id === songId)
+                ).filter(song => song); // 过滤掉未找到的歌曲
+                
+                state.currentPlaylistId = playlistId;
+                currentPlaylistName.textContent = playlistData.name || playlistId;
+                
+                renderPlaylist();
+                updatePlaylistCount();
+                
+                // 如果播放清单中有歌曲，自动播放第一首
+                if (state.playlist.length > 0) {
+                    playSong(state.playlist[0].id);
                 }
+            } catch (error) {
+                console.error('加载播放清单失败:', error);
+                alert(`无法加载播放清单: ${playlistId}`);
             }
-            
-            if (results.length > 0) {
-                results.sort((a, b) => a.responseTime - b.responseTime);
-                return results[0].id;
-            }
-            
-            return 'default';
         }
 
-        // 获取歌曲URL（智能选择镜像站）
-        async function getSongUrl(songPath) {
-            let mirrorId = state.currentMirror;
+        // 更改镜像站点
+        async function changeMirror() {
+            const newMirror = mirrorSelect.value;
             
-            // 如果是自动模式，选择最佳镜像站
-            if (mirrorId === 'auto') {
-                mirrorId = await getBestMirror();
+            // 更新状态
+            updateMirrorStatus('loading', '切换中...');
+            testMirrorBtn.disabled = true;
+            
+            try {
+                // 测试新镜像站
+                await testMirror(newMirror);
+                
+                state.currentMirror = newMirror;
+                updateMirrorStatus('ready', '就绪');
+                
+                // 保存用户选择
+                localStorage.setItem('preferredMirror', newMirror);
+                
+                // 清空缓存
+                state.audioCache.clear();
+                
+                // 如果当前正在播放歌曲，重新加载当前歌曲
+                if (state.currentSong) {
+                    const currentSongId = state.currentSong.id;
+                    playSong(currentSongId);
+                }
+                
+                alert(`已切换到 ${CONFIG.mirrors[newMirror].name}`);
+            } catch (error) {
+                console.error('切换镜像站失败:', error);
+                updateMirrorStatus('error', '连接失败');
+                
+                // 恢复原来的选择
+                mirrorSelect.value = state.currentMirror;
+                alert(`切换到 ${CONFIG.mirrors[newMirror].name} 失败，请检查网络或选择其他镜像站`);
+            } finally {
+                testMirrorBtn.disabled = false;
+            }
+        }
+
+        // 测试当前镜像站
+        async function testCurrentMirror() {
+            const mirror = mirrorSelect.value;
+            await testMirror(mirror);
+        }
+
+        // 测试镜像站连接
+        async function testMirror(mirrorId) {
+            updateMirrorStatus('loading', '测试中...');
+            testMirrorBtn.disabled = true;
+            
+            try {
+                const mirror = CONFIG.mirrors[mirrorId];
+                
+                // 使用第一个歌曲进行测试（修复URL编码问题）
+                const testSongPath = encodeURIComponent('001/(It Goes Like) Nanana (Edit).mp3').replace(/%28/g, '(').replace(/%29/g, ')');
+                const testSongUrl = mirror.baseUrl + testSongPath;
+                
+                // 创建测试请求
+                const response = await fetch(testSongUrl, { method: 'HEAD' });
+                
+                if (response.ok) {
+                    updateMirrorStatus('ready', '连接正常');
+                    return true;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                updateMirrorStatus('error', '连接失败');
+                throw error;
+            } finally {
+                testMirrorBtn.disabled = false;
+            }
+        }
+
+        // 开始测速所有镜像站
+        async function startSpeedTest() {
+            if (state.speedTestInProgress) {
+                alert('测速正在进行中，请稍候...');
+                return;
             }
             
-            const mirror = CONFIG.mirrors[mirrorId];
+            state.speedTestInProgress = true;
+            speedTestBtn.disabled = true;
+            speedTestBtn.textContent = '测速中...';
             
-            // 对路径进行编码，但保留括号
+            // 显示测速结果面板
+            speedTestResults.classList.add('active');
+            speedTestResultsBody.innerHTML = '<tr><td colspan="5" class="loading"><i class="fas fa-spinner fa-spin"></i><p>正在测速，请稍候...</p></td></tr>';
+            
+            try {
+                const results = [];
+                
+                // 测试所有镜像站
+                for (const [mirrorId, mirror] of Object.entries(CONFIG.mirrors)) {
+                    const result = await testMirrorSpeed(mirrorId, mirror);
+                    results.push(result);
+                    
+                    // 更新UI显示当前进度
+                    updateSpeedTestProgress(results);
+                }
+                
+                // 按速度排序
+                results.sort((a, b) => a.responseTime - b.responseTime);
+                
+                // 显示最终结果
+                displaySpeedTestResults(results);
+                
+                // 自动选择最快的镜像站
+                if (results.length > 0 && results[0].success) {
+                    const fastestMirror = results[0].id;
+                    mirrorSelect.value = fastestMirror;
+                    state.currentMirror = fastestMirror;
+                    localStorage.setItem('preferredMirror', fastestMirror);
+                    updateMirrorStatus('ready', '已选择最快镜像');
+                    
+                    // 如果当前正在播放歌曲，重新加载当前歌曲
+                    if (state.currentSong) {
+                        const currentSongId = state.currentSong.id;
+                        playSong(currentSongId);
+                    }
+                }
+                
+            } catch (error) {
+                console.error('测速失败:', error);
+                speedTestResultsBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444;">测速失败，请检查网络连接</td></tr>';
+            } finally {
+                state.speedTestInProgress = false;
+                speedTestBtn.disabled = false;
+                speedTestBtn.textContent = '测速';
+            }
+        }
+
+        // 测试单个镜像站速度
+        async function testMirrorSpeed(mirrorId, mirror) {
+            const result = {
+                id: mirrorId,
+                name: mirror.name,
+                responseTime: 0,
+                downloadSpeed: 0,
+                success: false,
+                error: null
+            };
+            
+            try {
+                // 使用一个小文件进行测速（这里使用一个1MB的测试文件）
+                const testFileUrl = mirror.baseUrl + '001/(It Goes Like) Nanana (Edit).mp3';
+                
+                // 测试响应时间
+                const startTime = performance.now();
+                const response = await fetch(testFileUrl, { method: 'HEAD' });
+                const endTime = performance.now();
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                result.responseTime = Math.round(endTime - startTime);
+                result.success = true;
+                
+                // 如果有Content-Length，可以估算下载速度
+                const contentLength = response.headers.get('content-length');
+                if (contentLength) {
+                    // 这里简化处理，实际下载速度测试需要下载部分数据
+                    result.downloadSpeed = Math.round((contentLength / 1024) / (result.responseTime / 1000));
+                }
+                
+            } catch (error) {
+                result.success = false;
+                result.error = error.message;
+                result.responseTime = 9999; // 设置一个很大的值表示超时
+            }
+            
+            return result;
+        }
+
+        // 更新测速进度
+        function updateSpeedTestProgress(results) {
+            speedTestResultsBody.innerHTML = '';
+            
+            results.forEach((result, index) => {
+                const row = document.createElement('tr');
+                
+                let statusHtml = '';
+                if (result.success) {
+                    statusHtml = `<span class="speed-value speed-good">正常</span>`;
+                } else {
+                    statusHtml = `<span class="speed-value speed-slow">失败</span>`;
+                }
+                
+                let speedHtml = '';
+                if (result.success && result.downloadSpeed > 0) {
+                    speedHtml = `<span class="speed-value ${getSpeedClass(result.downloadSpeed)}">${result.downloadSpeed} KB/s</span>`;
+                } else {
+                    speedHtml = `<span class="speed-value speed-slow">-</span>`;
+                }
+                
+                row.innerHTML = `
+                    <td><span class="speed-rank speed-rank-${index + 1}">${index + 1}</span></td>
+                    <td>${result.name}</td>
+                    <td><span class="speed-value ${getResponseTimeClass(result.responseTime)}">${result.responseTime}ms</span></td>
+                    <td>${speedHtml}</td>
+                    <td>${statusHtml}</td>
+                `;
+                
+                speedTestResultsBody.appendChild(row);
+            });
+        }
+
+        // 显示测速结果
+        function displaySpeedTestResults(results) {
+            speedTestResultsBody.innerHTML = '';
+            
+            results.forEach((result, index) => {
+                const row = document.createElement('tr');
+                
+                let statusHtml = '';
+                if (result.success) {
+                    statusHtml = `<span class="speed-value speed-good">正常</span>`;
+                } else {
+                    statusHtml = `<span class="speed-value speed-slow">失败: ${result.error}</span>`;
+                }
+                
+                let speedHtml = '';
+                if (result.success && result.downloadSpeed > 0) {
+                    speedHtml = `<span class="speed-value ${getSpeedClass(result.downloadSpeed)}">${result.downloadSpeed} KB/s</span>`;
+                } else {
+                    speedHtml = `<span class="speed-value speed-slow">-</span>`;
+                }
+                
+                const isRecommended = index === 0 && result.success;
+                
+                row.innerHTML = `
+                    <td><span class="speed-rank ${index < 3 ? `speed-rank-${index + 1}` : ''}">${index + 1}</span></td>
+                    <td>${result.name} ${isRecommended ? '<span class="recommended-badge">推荐</span>' : ''}</td>
+                    <td><span class="speed-value ${getResponseTimeClass(result.responseTime)}">${result.responseTime}ms</span></td>
+                    <td>${speedHtml}</td>
+                    <td>${statusHtml}</td>
+                `;
+                
+                speedTestResultsBody.appendChild(row);
+            });
+        }
+
+        // 根据响应时间获取CSS类
+        function getResponseTimeClass(responseTime) {
+            if (responseTime < 200) return 'speed-good';
+            if (responseTime < 500) return 'speed-medium';
+            return 'speed-slow';
+        }
+
+        // 根据下载速度获取CSS类
+        function getSpeedClass(speed) {
+            if (speed > 500) return 'speed-good';
+            if (speed > 100) return 'speed-medium';
+            return 'speed-slow';
+        }
+
+        // 关闭测速结果面板
+        function closeSpeedTestResults() {
+            speedTestResults.classList.remove('active');
+        }
+
+        // 更新镜像站状态显示
+        function updateMirrorStatus(status, text) {
+            statusDot.className = 'status-dot';
+            statusText.textContent = text;
+            
+            switch(status) {
+                case 'loading':
+                    statusDot.classList.add('loading');
+                    break;
+                case 'ready':
+                    statusDot.style.backgroundColor = '#10b981';
+                    break;
+                case 'error':
+                    statusDot.classList.add('error');
+                    break;
+            }
+        }
+
+        // 加载用户偏好的镜像站
+        function loadMirrorPreference() {
+            const savedMirror = localStorage.getItem('preferredMirror');
+            if (savedMirror && CONFIG.mirrors[savedMirror]) {
+                mirrorSelect.value = savedMirror;
+                state.currentMirror = savedMirror;
+            }
+            
+            // 初始测试
+            testMirror(state.currentMirror);
+        }
+
+        // 获取歌曲的完整URL（根据当前镜像站点）- 修复URL编码问题
+        function getSongUrl(songPath) {
+            const mirror = CONFIG.mirrors[state.currentMirror];
+            
+            // 对路径进行编码，但保留括号（因为有些CDN对括号有特殊处理）
             let encodedPath = encodeURIComponent(songPath)
                 .replace(/%28/g, '(')
                 .replace(/%29/g, ')')
@@ -935,110 +1520,545 @@
             return mirror.baseUrl + encodedPath;
         }
 
-        // 播放歌曲（带缓存）
-        async function playSong(songId) {
+        // 刷新音乐数据
+        async function refreshMusicData() {
+            folderList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>刷新中...</p></div>';
+            try {
+                await loadMusicLibrary();
+                if (state.currentFolder) {
+                    renderSongs();
+                }
+                alert('曲库已刷新');
+            } catch (error) {
+                console.error('刷新失败:', error);
+                alert('刷新失败，使用缓存数据');
+            }
+        }
+
+        // 设置音频事件
+        function setupAudioEvents() {
+            state.audioElement.addEventListener('loadedmetadata', () => {
+                state.duration = state.audioElement.duration;
+                durationEl.textContent = formatTime(state.duration);
+            });
+
+            state.audioElement.addEventListener('timeupdate', () => {
+                state.currentTime = state.audioElement.currentTime;
+                const progressPercent = (state.currentTime / state.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                currentTime.textContent = formatTime(state.currentTime);
+                
+                // 当播放到70%时预加载下一首
+                if (state.preloadEnabled && progressPercent > 70 && !state.nextSongPreloaded) {
+                    preloadNextSong();
+                }
+            });
+
+            state.audioElement.addEventListener('ended', () => {
+                playNext();
+            });
+
+            // 添加错误处理
+            state.audioElement.addEventListener('error', (e) => {
+                console.error('音频加载错误:', e);
+                const error = state.audioElement.error;
+                let errorMsg = '音频加载失败';
+                
+                if (error) {
+                    switch(error.code) {
+                        case error.MEDIA_ERR_ABORTED:
+                            errorMsg = '音频加载被中止';
+                            break;
+                        case error.MEDIA_ERR_NETWORK:
+                            errorMsg = '网络错误，请检查网络连接或尝试切换镜像站';
+                            break;
+                        case error.MEDIA_ERR_DECODE:
+                            errorMsg = '音频解码错误';
+                            break;
+                        case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                            errorMsg = '音频格式不被支持或URL错误';
+                            break;
+                    }
+                }
+                
+                alert(errorMsg);
+                state.isPlaying = false;
+                playPauseIcon.className = 'fas fa-play';
+            });
+
+            // 添加加载进度事件
+            state.audioElement.addEventListener('progress', () => {
+                updateCacheIndicator();
+            });
+
+            state.audioElement.addEventListener('canplaythrough', () => {
+                cacheIndicator.textContent = '已缓存';
+                cacheIndicator.className = 'cache-indicator cached';
+            });
+        }
+
+        // 更新缓存指示器
+        function updateCacheIndicator() {
+            if (state.audioElement.buffered.length > 0) {
+                const bufferedEnd = state.audioElement.buffered.end(state.audioElement.buffered.length - 1);
+                const duration = state.audioElement.duration;
+                if (duration > 0) {
+                    const percent = (bufferedEnd / duration) * 100;
+                    cacheIndicator.textContent = `已缓存 ${Math.round(percent)}%`;
+                    cacheIndicator.className = 'cache-indicator';
+                }
+            }
+        }
+
+        // 预加载下一首歌曲
+        function preloadNextSong() {
+            if (!state.currentSong || state.playlist.length === 0) return;
+            
+            const currentIndex = state.playlist.findIndex(song => song.id === state.currentSong.id);
+            const nextIndex = currentIndex < state.playlist.length - 1 ? currentIndex + 1 : 0;
+            const nextSong = state.playlist[nextIndex];
+            
+            if (nextSong && !state.audioCache.has(nextSong.id)) {
+                const nextSongUrl = getSongUrl(nextSong.url);
+                const audio = new Audio();
+                audio.preload = 'auto';
+                audio.src = nextSongUrl;
+                
+                state.audioCache.set(nextSong.id, audio);
+                state.nextSongPreloaded = true;
+                
+                console.log('已预加载下一首歌曲:', nextSong.title);
+            }
+        }
+
+        // 切换预加载功能
+        function togglePreload() {
+            state.preloadEnabled = !state.preloadEnabled;
+            localStorage.setItem('preloadEnabled', state.preloadEnabled);
+            
+            if (state.preloadEnabled) {
+                preloadIcon.style.color = 'var(--primary-color)';
+                alert('预加载功能已启用');
+            } else {
+                preloadIcon.style.color = '';
+                // 清空预加载缓存
+                state.audioCache.clear();
+                state.nextSongPreloaded = false;
+                alert('预加载功能已禁用');
+            }
+        }
+
+        // 加载预加载设置
+        function loadPreloadSetting() {
+            const savedPreload = localStorage.getItem('preloadEnabled');
+            if (savedPreload !== null) {
+                state.preloadEnabled = savedPreload === 'true';
+                if (state.preloadEnabled) {
+                    preloadIcon.style.color = 'var(--primary-color)';
+                }
+            }
+        }
+
+        // 渲染文件夹
+        function renderFolders() {
+            folderList.innerHTML = '';
+            
+            // 添加"所有歌曲"选项
+            const allSongsItem = document.createElement('li');
+            allSongsItem.className = 'folder-item active';
+            allSongsItem.innerHTML = `
+                <i class="fas fa-folder-open folder-icon"></i>
+                <span>所有歌曲</span>
+                <span style="margin-left: auto; font-size: 0.8rem; color: #94a3b8;">${state.musicLibrary.songs.length}</span>
+            `;
+            allSongsItem.addEventListener('click', () => {
+                document.querySelectorAll('.folder-item').forEach(item => item.classList.remove('active'));
+                allSongsItem.classList.add('active');
+                state.currentFolder = null;
+                currentFolder.textContent = '所有歌曲';
+                renderSongs();
+            });
+            folderList.appendChild(allSongsItem);
+            
+            // 添加各个文件夹
+            state.musicLibrary.folders.forEach(folder => {
+                const folderItem = document.createElement('li');
+                folderItem.className = 'folder-item';
+                folderItem.innerHTML = `
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>${folder.name}</span>
+                    <span style="margin-left: auto; font-size: 0.8rem; color: #94a3b8;">${folder.count}</span>
+                `;
+                folderItem.addEventListener('click', () => {
+                    document.querySelectorAll('.folder-item').forEach(item => item.classList.remove('active'));
+                    folderItem.classList.add('active');
+                    state.currentFolder = folder.id;
+                    currentFolder.textContent = folder.name;
+                    renderSongs();
+                });
+                folderList.appendChild(folderItem);
+            });
+        }
+
+        // 渲染歌曲列表
+        function renderSongs() {
+            songList.innerHTML = '';
+            
+            let songsToShow = state.currentFolder 
+                ? state.musicLibrary.songs.filter(song => song.folderId === state.currentFolder)
+                : state.musicLibrary.songs;
+                
+            if (songsToShow.length === 0) {
+                songList.innerHTML = '<div class="loading"><p>该文件夹中没有歌曲</p></div>';
+                return;
+            }
+                
+            songsToShow.forEach(song => {
+                const songItem = document.createElement('li');
+                songItem.className = 'song-item';
+                if (state.currentSong && state.currentSong.id === song.id) {
+                    songItem.classList.add('playing');
+                }
+                
+                songItem.innerHTML = `
+                    <div class="song-info">
+                        <div class="song-title">${song.title}</div>
+                        <div class="song-artist">${song.artist}</div>
+                    </div>
+                    <div class="song-duration">${song.duration}</div>
+                    <div class="song-actions">
+                        <button class="btn play-song" data-id="${song.id}" title="播放">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="btn add-to-playlist" data-id="${song.id}" title="添加到播放列表">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                `;
+                
+                songList.appendChild(songItem);
+            });
+            
+            // 添加歌曲事件监听
+            document.querySelectorAll('.play-song').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const songId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    playSong(songId);
+                });
+            });
+            
+            document.querySelectorAll('.add-to-playlist').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const songId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    addToPlaylist(songId);
+                });
+            });
+        }
+
+        // 播放歌曲 - 修复带括号歌曲的播放问题
+        function playSong(songId) {
             const song = state.musicLibrary.songs.find(s => s.id === songId);
             if (!song) return;
             
             state.currentSong = song;
+            state.isPlaying = true;
+            state.nextSongPreloaded = false;
             
-            // 获取歌曲URL
-            const songUrl = await getSongUrl(song.url);
-            
-            // 先暂停当前播放
-            if (state.audioElement) {
-                state.audioElement.pause();
-                state.audioElement.currentTime = 0;
+            // 检查是否有预加载的缓存
+            if (state.audioCache.has(songId)) {
+                const cachedAudio = state.audioCache.get(songId);
+                state.audioElement = cachedAudio;
+                setupAudioEvents();
+            } else {
+                // 设置音频源（使用当前镜像站点）- 修复URL编码问题
+                const songUrl = getSongUrl(song.url);
+                console.log('尝试播放:', songUrl); // 调试信息
+                
+                state.audioElement.src = songUrl;
             }
             
-            // 尝试从缓存加载
-            let audioSource = songUrl;
-            const cachedResponse = await state.cacheManager.getCachedSong(songUrl);
-            
-            if (cachedResponse) {
-                audioSource = URL.createObjectURL(await cachedResponse.blob());
-            }
-            
-            // 设置新的音频源
-            state.audioElement.src = audioSource;
             state.audioElement.volume = state.volume;
             
-            // 更新UI
+            state.audioElement.play().catch(error => {
+                console.error('播放失败:', error);
+                
+                // 如果播放失败，尝试使用未编码的URL（某些服务器可能不需要编码）
+                const fallbackUrl = CONFIG.mirrors[state.currentMirror].baseUrl + song.url;
+                console.log('尝试备用URL:', fallbackUrl);
+                
+                state.audioElement.src = fallbackUrl;
+                state.audioElement.play().catch(fallbackError => {
+                    console.error('备用URL也失败:', fallbackError);
+                    alert('播放失败，请检查音乐文件路径或网络连接。错误: ' + fallbackError.message);
+                });
+            });
+            
             currentSongTitle.textContent = song.title;
             currentSongArtist.textContent = song.artist;
+            playPauseIcon.className = 'fas fa-pause';
             
+            // 更新UI
             document.querySelectorAll('.song-item').forEach(item => item.classList.remove('playing'));
             document.querySelectorAll('.song-item').forEach(item => {
                 if (parseInt(item.querySelector('.play-song').getAttribute('data-id')) === songId) {
                     item.classList.add('playing');
                 }
             });
+        }
+
+        // 添加到播放列表
+        function addToPlaylist(songId) {
+            const song = state.musicLibrary.songs.find(s => s.id === songId);
+            if (!song) return;
             
-            // 预加载下一首歌曲
-            if (CONFIG.cache.preloadNext) {
-                const currentIndex = state.playlist.findIndex(s => s.id === songId);
-                if (currentIndex !== -1 && currentIndex < state.playlist.length - 1) {
-                    const nextSong = state.playlist[currentIndex + 1];
-                    preloadSong(nextSong);
+            // 检查是否已在播放列表中
+            if (state.playlist.some(s => s.id === songId)) {
+                alert('这首歌已经在播放列表中了！');
+                return;
+            }
+            
+            state.playlist.push(song);
+            renderPlaylist();
+            updatePlaylistCount();
+        }
+
+        // 渲染播放列表
+        function renderPlaylist() {
+            playlistItems.innerHTML = '';
+            
+            if (state.playlist.length === 0) {
+                playlistItems.innerHTML = '<div class="loading"><p>播放列表为空</p></div>';
+                return;
+            }
+            
+            state.playlist.forEach((song, index) => {
+                const playlistItem = document.createElement('li');
+                playlistItem.className = 'playlist-item';
+                playlistItem.innerHTML = `
+                    <div class="song-info">
+                        <div class="song-title">${song.title}</div>
+                        <div class="song-artist">${song.artist}</div>
+                    </div>
+                    <button class="btn btn-remove" data-index="${index}" title="从播放列表移除">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                playlistItems.appendChild(playlistItem);
+            });
+            
+            // 添加移除事件监听
+            document.querySelectorAll('.btn-remove').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = parseInt(e.currentTarget.getAttribute('data-index'));
+                    removeFromPlaylist(index);
+                });
+            });
+        }
+
+        // 从播放列表移除
+        function removeFromPlaylist(index) {
+            state.playlist.splice(index, 1);
+            renderPlaylist();
+            updatePlaylistCount();
+        }
+
+        // 更新播放列表计数
+        function updatePlaylistCount() {
+            playlistCount.textContent = state.playlist.length;
+        }
+
+        // 播放/暂停切换
+        function togglePlayPause() {
+            if (!state.currentSong) {
+                if (state.playlist.length > 0) {
+                    playSong(state.playlist[0].id);
+                } else if (state.musicLibrary.songs.length > 0) {
+                    playSong(state.musicLibrary.songs[0].id);
+                }
+                return;
+            }
+            
+            if (state.isPlaying) {
+                state.audioElement.pause();
+                playPauseIcon.className = 'fas fa-play';
+            } else {
+                state.audioElement.play();
+                playPauseIcon.className = 'fas fa-pause';
+            }
+            state.isPlaying = !state.isPlaying;
+        }
+
+        // 播放上一首
+        function playPrev() {
+            if (!state.currentSong || state.playlist.length === 0) return;
+            
+            const currentIndex = state.playlist.findIndex(song => song.id === state.currentSong.id);
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : state.playlist.length - 1;
+            playSong(state.playlist[prevIndex].id);
+        }
+
+        // 播放下一首
+        function playNext() {
+            if (!state.currentSong || state.playlist.length === 0) return;
+            
+            const currentIndex = state.playlist.findIndex(song => song.id === state.currentSong.id);
+            const nextIndex = currentIndex < state.playlist.length - 1 ? currentIndex + 1 : 0;
+            playSong(state.playlist[nextIndex].id);
+        }
+
+        // 播放全部
+        function playAll() {
+            let songsToPlay = state.currentFolder 
+                ? state.musicLibrary.songs.filter(song => song.folderId === state.currentFolder)
+                : state.musicLibrary.songs;
+                
+            if (songsToPlay.length === 0) return;
+            
+            state.playlist = [...songsToPlay];
+            renderPlaylist();
+            updatePlaylistCount();
+            playSong(songsToPlay[0].id);
+        }
+
+        // 添加全部到播放列表
+        function addAllToPlaylist() {
+            let songsToAdd = state.currentFolder 
+                ? state.musicLibrary.songs.filter(song => song.folderId === state.currentFolder)
+                : state.musicLibrary.songs;
+                
+            // 过滤掉已经在播放列表中的歌曲
+            songsToAdd = songsToAdd.filter(song => !state.playlist.some(s => s.id === song.id));
+            
+            state.playlist.push(...songsToAdd);
+            renderPlaylist();
+            updatePlaylistCount();
+            
+            if (songsToAdd.length > 0) {
+                alert(`已添加 ${songsToAdd.length} 首歌曲到播放列表`);
+            } else {
+                alert('所有歌曲已在播放列表中');
+            }
+        }
+
+        // 清空播放列表
+        function clearPlaylist() {
+            if (state.playlist.length === 0) return;
+            
+            if (confirm('确定要清空播放列表吗？')) {
+                state.playlist = [];
+                renderPlaylist();
+                updatePlaylistCount();
+            }
+        }
+
+        // 保存播放列表
+        function savePlaylist() {
+            if (state.playlist.length === 0) {
+                alert('播放列表为空，无法保存');
+                return;
+            }
+            
+            const playlistData = {
+                name: `${currentFolder.textContent} - ${new Date().toLocaleDateString()}`,
+                songs: state.playlist
+            };
+            
+            localStorage.setItem('savedPlaylist', JSON.stringify(playlistData));
+            alert('播放列表已保存到本地存储');
+        }
+
+        // 加载保存的播放列表
+        function loadSavedPlaylist() {
+            const savedPlaylist = localStorage.getItem('savedPlaylist');
+            if (savedPlaylist) {
+                try {
+                    const playlistData = JSON.parse(savedPlaylist);
+                    state.playlist = playlistData.songs;
+                    renderPlaylist();
+                    updatePlaylistCount();
+                } catch (e) {
+                    console.error('加载播放列表失败:', e);
                 }
             }
+        }
+
+        // 跳转进度
+        function seek(e) {
+            if (!state.currentSong || !state.audioElement) return;
             
-            // 播放
-            const playPromise = state.audioElement.play();
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            state.audioElement.currentTime = percent * state.duration;
+        }
+
+        // 更新音量
+        function updateVolume() {
+            state.volume = volumeSlider.value / 100;
+            state.audioElement.volume = state.volume;
             
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    state.isPlaying = true;
-                    playPauseIcon.className = 'fas fa-pause';
-                }).catch(error => {
-                    console.error('播放失败:', error);
-                    state.isPlaying = false;
-                    playPauseIcon.className = 'fas fa-play';
-                });
+            // 更新音量图标
+            if (state.volume === 0) {
+                volumeIcon.className = 'fas fa-volume-mute';
+            } else if (state.volume < 0.5) {
+                volumeIcon.className = 'fas fa-volume-down';
+            } else {
+                volumeIcon.className = 'fas fa-volume-up';
             }
         }
 
-        // 显示缓存管理器
-        async function showCacheManager() {
-            const cacheSize = await state.cacheManager.getCacheSize();
-            const cacheSizeMB = (cacheSize / (1024 * 1024)).toFixed(2);
-            
-            if (confirm(`当前缓存大小: ${cacheSizeMB} MB\n\n是否要清空缓存？`)) {
-                await state.cacheManager.clearCache();
-                state.preloadedSongs.clear();
-                alert('缓存已清空');
-            }
+        // 工具函数：将秒数格式化为时间字符串
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        // 测速所有镜像站
-        async function startSpeedTest() {
-            if (state.speedTestInProgress) return;
-            
-            state.speedTestInProgress = true;
-            speedTestBtn.disabled = true;
-            speedTestBtn.textContent = '测速中...';
-            updateMirrorStatus('loading', '测速中...');
-            
-            try {
-                const bestMirror = await getBestMirror();
-                state.currentMirror = 'auto';
-                mirrorSelect.value = 'auto';
-                
-                updateMirrorStatus('ready', `已选择最佳镜像: ${CONFIG.mirrors[bestMirror].name}`);
-                alert(`测速完成！已自动选择最快的镜像站: ${CONFIG.mirrors[bestMirror].name}`);
-            } catch (error) {
-                console.error('测速失败:', error);
-                updateMirrorStatus('error', '测速失败');
-            } finally {
-                state.speedTestInProgress = false;
-                speedTestBtn.disabled = false;
-                speedTestBtn.textContent = '测速';
-            }
+        // 默认曲库数据（当外部加载失败时使用）
+        function getDefaultLibrary() {
+            return {
+                folders: [
+                    { id: '001', name: "20251031更新上架", count: 34 },
+                    { id: '002', name: "其他音乐", count: 0 },
+                ],
+                songs: [
+                    { id: 1, folderId: '001', title: "(It Goes Like) Nanana (Edit)", artist: "Peggy Gou", duration: "3:25", url: "001/(It Goes Like) Nanana (Edit).mp3" },
+                    { id: 2, folderId: '001', title: "Padam Padam (Single Version)", artist: "Kylie Minogue", duration: "2:46", url: "001/Padam Padam (Single Version).mp3" },
+                    { id: 3, folderId: '001', title: "DNA (Loving You) [feat. Hannah Boleyn]", artist: "Billy Gillies、Hannah Boleyn", duration: "3:15", url: "001/DNA (Loving You) [feat. Hannah Boleyn].mp3" },
+                    { id: 4, folderId: '001', title: "Ignite", artist: "K-391、Alan Walker、Julie Bergan、胜利", duration: "3:30", url: "001/Ignite.mp3" },
+                    { id: 5, folderId: '001', title: "Do It Like That", artist: "TOMORROW X TOGETHER、Jonas Brothers、Alan Walker", duration: "2:59", url: "001/Do It Like That.mp3" },
+                    { id: 6, folderId: '001', title: "Wasted", artist: "Tiësto、Matthew Koma", duration: "3:10", url: "001/Wasted.mp3" },
+                    { id: 7, folderId: '001', title: "The Motto", artist: "Tiësto、Ava Max", duration: "2:44", url: "001/The Motto.mp3" },
+                    { id: 8, folderId: '001', title: "Tantalizing", artist: "Tiësto、Soaky Siren", duration: "2:48", url: "001/Tantalizing.mp3" },
+                    { id: 9, folderId: '001', title: "Hot Honey", artist: "Tiësto、Alana Springsteen", duration: "2:53", url: "001/Hot Honey.mp3" },
+                    { id: 10, folderId: '001', title: "Undecided (Explicit)", artist: "Chris Brown", duration: "3:27", url: "001/Undecided (Explicit).mp3" },
+                    { id: 11, folderId: '001', title: "You Got Me", artist: "Justin Caruso、Tiësto", duration: "3:12", url: "001/You Got Me.mp3" },
+                    { id: 12, folderId: '001', title: "BOOM", artist: "Tiësto、Sevenn", duration: "2:50", url: "001/BOOM.mp3" },
+                    { id: 13, folderId: '001', title: "We Don't Talk Anymore", artist: "Charlie Puth、Selena Gomez", duration: "3:37", url: "001/We Don't Talk Anymore.mp3" },
+                    { id: 14, folderId: '001', title: "Seasons", artist: "Rival、Cadmium、Harley Bird", duration: "3:45", url: "001/Seasons.mp3" },
+                    { id: 15, folderId: '001', title: "PPAP (Pen-Pineapple-Apple-Pen)", artist: "PIKO太郎", duration: "0:45", url: "001/PPAP (Pen-Pineapple-Apple-Pen).mp3" },
+                    { id: 16, folderId: '001', title: "Never Going Home Tonight (feat. Madison Love)", artist: "David Guetta、Alesso、Madison Love", duration: "2:58", url: "001/Never Going Home Tonight (feat. Madison Love).mp3" },
+                    { id: 17, folderId: '001', title: "Sorry", artist: "Justin Bieber", duration: "3:20", url: "001/Sorry.mp3" },
+                    { id: 18, folderId: '001', title: "Mmm Yeah", artist: "Austin Mahone、Pitbull", duration: "3:47", url: "001/Mmm Yeah.mp3" },
+                    { id: 19, folderId: '001', title: "Cruel Summer", artist: "Taylor Swift", duration: "2:58", url: "001/Cruel Summer.mp3" },
+                    { id: 20, folderId: '001', title: "Señorita", artist: "Shawn Mendes、Camila Cabello", duration: "3:10", url: "001/Señorita.mp3" },
+                    { id: 21, folderId: '001', title: "Shake It Off", artist: "Taylor Swift", duration: "3:39", url: "001/Shake It Off.mp3" },
+                    { id: 22, folderId: '001', title: "JOYRIDE (Explicit)", artist: "Kesha", duration: "3:04", url: "001/JOYRIDE (Explicit).mp3" },
+                    { id: 23, folderId: '001', title: "Call Me Maybe", artist: "Carly Rae Jepsen", duration: "3:13", url: "001/Call Me Maybe.mp3" },
+                    { id: 24, folderId: '001', title: "I Don't Wanna Wait", artist: "David Guetta、OneRepublic", duration: "2:52", url: "001/I Don't Wanna Wait.mp3" },
+                    { id: 25, folderId: '001', title: "Moonshine", artist: "Alan Walker、Elley Duhè", duration: "3:08", url: "001/Moonshine.mp3" },
+                    { id: 26, folderId: '001', title: "念诗之王", artist: "小可儿", duration: "1:50", url: "001/念诗之王.mp3" },
+                    { id: 27, folderId: '001', title: "Eye of the Tiger", artist: "Survivor", duration: "4:05", url: "001/Eye of the Tiger.mp3" },
+                    { id: 28, folderId: '001', title: "Coming Home", artist: "Tiësto、Mesto", duration: "3:15", url: "001/Coming Home.mp3" },
+                    { id: 29, folderId: '001', title: "Colors (Vicetone Remix)", artist: "Vicetone、Hardwell、Tiësto、Andreas Moe", duration: "3:22", url: "001/Colors (Vicetone Remix).mp3" },
+                    { id: 30, folderId: '001', title: "No Mercy", artist: "MOTi", duration: "2:50", url: "001/No Mercy.mp3" },
+                    { id: 31, folderId: '001', title: "Red Lights (Extended Version)", artist: "Tiësto", duration: "5:12", url: "001/Red Lights (Extended Version).mp3" },
+                    { id: 32, folderId: '001', title: "Tear It Down (From Hotel Transylvania 3)", artist: "Tiësto", duration: "3:08", url: "001/Tear It Down (From Hotel Transylvania 3).mp3" },
+                    { id: 33, folderId: '001', title: "Stay", artist: "MOTi、Alida", duration: "3:05", url: "001/Stay.mp3" },
+                    { id: 34, folderId: '001', title: "Feels Like You", artist: "MOTi、Robert Falcon", duration: "2:58", url: "001/Feels Like You.mp3" }
+                ]
+            };
         }
-
-        // 由于篇幅限制，这里只展示了关键函数
-        // 其他函数（renderFolders, renderSongs, togglePlayPause等）与之前类似
-        // 完整实现需要包含所有必要的功能函数
 
         // 初始化应用
         document.addEventListener('DOMContentLoaded', init);
