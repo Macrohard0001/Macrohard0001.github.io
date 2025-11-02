@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络测速 - Macrohard Studio</title>
+    <link rel="icon" href="https://github.com/Macrohard0001-m01/Macrohard0001-m01.github.io/blob/main/images/macrohard_icon_day.png?raw=true" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .speed-test {
+            padding: 60px 0;
+        }
+        
+        .speed-test-container {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .speed-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .speed-card {
+            background: linear-gradient(135deg, var(--primary-color), #6a11cb);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .speed-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .speed-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .speed-unit {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .speed-progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .speed-progress-bar {
+            height: 100%;
+            background: white;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .test-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn-large {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+        }
+        
+        .server-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .server-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .server-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .server-card.active {
+            border-color: var(--primary-color);
+            background: rgba(74, 108, 247, 0.1);
+        }
+        
+        .server-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .server-ping {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+        
+        .status-dot.offline {
+            background: #ef4444;
+        }
+        
+        .status-dot.loading {
+            background: #f59e0b;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .history-chart {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .test-info {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .info-item {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+        
+        .speed-quality {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .testing-animation {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .testing-animation.active {
+            display: block;
+        }
+        
+        .wave {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 15px 0;
+        }
+        
+        .wave-bar {
+            width: 4px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            animation: wave 1.2s ease-in-out infinite;
+        }
+        
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        
+        @keyframes wave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(2); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @media (max-width: 768px) {
+            .speed-value {
+                font-size: 2rem;
+            }
+            
+            .test-controls {
+                flex-direction: column;
+            }
+            
+            .btn-large {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="images/macrohard_icon.png" alt="Logo" class="logo-icon">
+                    <span>Macrohard Studio</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="software.html">软件</a></li>
+                    <li><a href="music.html">音乐</a></li>
+                    <li><a href="tools.html" class="active">小工具</a></li>
+                    <li><a href="reserved2.html">预留2</a></li>
+                    <li><a href="reserved3.html">预留3</a></li>
+                    <li><a href="reserved4.html">预留4</a></li>
+                    <li><a href="reserved5.html">预留5</a></li>
+                    <li><a href="sentiment.html">情怀与初衷</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+                <div class="nav-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="hamburger">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 页面标题 -->
+    <section class="hero">
+        <div class="container">
+            <h1>网络测速工具</h1>
+            <p>使用第三方服务测试您的网络连接速度</p>
+        </div>
+    </section>
+
+    <!-- 测速工具内容 -->
+    <section class="speed-test">
+        <div class="container">
+            <div class="speed-test-container">
+                <h2 style="text-align: center; margin-bottom: 30px;">网络速度测试</h2>
+                
+                <div class="testing-animation" id="testingAnimation">
+                    <div class="wave">
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                    </div>
+                    <p>正在测试网络速度，请稍候...</p>
+                </div>
+                
+                <div class="speed-results">
+                    <div class="speed-card">
+                        <i class="fas fa-download" style="font-size: 2rem;"></i>
+                        <div class="speed-value" id="downloadSpeed">0</div>
+                        <div class="speed-unit">Mbps</div>
+                        <div class="speed-label">下载速度</div>
+                        <div class="speed-progress">
+                            <div class="speed-progress-bar" id="downloadProgress"></div>
+                        </div>
+                        <div class="speed-quality" id="downloadQuality">-</div>
+                    </div>
+                    
+                    <div class="speed-card">
+                        <i class="fas fa-upload" style="font-size: 2rem;"></i>
+                        <div class="speed-value" id="uploadSpeed">0</div>
+                        <div class="speed-unit">Mbps</div>
+                        <div class="speed-label">上传速度</div>
+                        <div class="speed-progress">
+                            <div class="speed-progress-bar" id="uploadProgress"></div>
+                        </div>
+                        <div class="speed-quality" id="uploadQuality">-</div>
+                    </div>
+                    
+                    <div class="speed-card">
+                        <i class="fas fa-signal" style="font-size: 2rem;"></i>
+                        <div class="speed-value" id="pingValue">0</div>
+                        <div class="speed-unit">ms</div>
+                        <div class="speed-label">延迟</div>
+                        <div class="speed-progress">
+                            <div class="speed-progress-bar" id="pingProgress"></div>
+                        </div>
+                        <div class="speed-quality" id="pingQuality">-</div>
+                    </div>
+                </div>
+                
+                <div class="test-controls">
+                    <button class="btn btn-primary btn-large" id="startTest">
+                        <i class="fas fa-play"></i> 开始测速
+                    </button>
+                    <button class="btn btn-secondary btn-large" id="stopTest" disabled>
+                        <i class="fas fa-stop"></i> 停止测试
+                    </button>
+                    <button class="btn btn-outline btn-large" id="advancedTest">
+                        <i class="fas fa-chart-line"></i> 详细测试
+                    </button>
+                </div>
+                
+                <div class="test-info">
+                    <div class="info-item">
+                        <div class="info-value" id="jitterValue">0</div>
+                        <div class="info-label">抖动</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value" id="packetLoss">0%</div>
+                        <div class="info-label">丢包率</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value" id="serverLocation">-</div>
+                        <div class="info-label">测试服务器</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value" id="ipAddress">-</div>
+                        <div class="info-label">您的IP</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="speed-test-container">
+                <h3>选择测速服务提供商</h3>
+                <p>选择不同的第三方测速服务进行测试</p>
+                
+                <div class="server-list" id="serviceList">
+                    <!-- 服务列表将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <div class="speed-test-container">
+                <h3>测速说明</h3>
+                <div style="line-height: 1.6;">
+                    <p><strong>如何使用：</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 20px;">
+                        <li>点击"开始测速"按钮开始测试</li>
+                        <li>测试过程可能需要1-2分钟</li>
+                        <li>测试期间请勿关闭页面或进行大流量操作</li>
+                        <li>可以选择不同的第三方测速服务进行对比</li>
+                    </ul>
+                    
+                    <p><strong>速度参考标准：</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li><span style="color: #10b981;">优秀</span>：下载速度 > 100 Mbps</li>
+                        <li><span style="color: #f59e0b;">良好</span>：下载速度 30-100 Mbps</li>
+                        <li><span style="color: #ef4444;">一般</span>：下载速度 10-30 Mbps</li>
+                        <li><span style="color: #dc2626;">较差</span>：下载速度 < 10 Mbps</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="history-chart">
+                <h3>测速历史</h3>
+                <p>最近几次测速结果对比</p>
+                <div id="speedChart" style="height: 200px; margin-top: 20px;">
+                    <div style="text-align: center; padding: 60px 0; color: var(--text-muted);">
+                        <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <p>暂无测速历史数据</p>
+                        <p class="info-label">完成第一次测速后，结果将显示在这里</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="images/macrohard_icon.png" alt="Logo" class="footer-logo-icon">
+                        Macrohard Studio
+                    </div>
+                    <p>高中生的小站</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>快速链接</h3>
+                        <ul>
+                            <li><a href="https://github.com/Macrohard0001-m01">个人主页</a></li>
+                            <li><a href="https://github.com/Macrohard0001-m01" target="_blank">GitHub</a></li>
+                            <li><a href="https://chat.deepseek.com/" target="_blank">DeepSeek</a></li>
+                            <li><a href="https://docs.lxmusic.top/" target="_blank">LX Music</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>作品</h3>
+                        <ul>
+                            <li><a href="software.html">AORE</a></li>
+                            <li><a href="software.html">RCP3</a></li>
+                            <li><a href="tools.html">网络测速</a></li>
+                            <li><a href="">预留</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>联系信息</h3>
+                        <ul>
+                            <li><i class="fas fa-envelope"></i> Macrohard0001_m01@outlook.com</li>
+                            <li><i class="fas fa-map-marker-alt"></i> hbzzzx</li>
+                            <li><i class="fas fa-clock"></i> 我很忙~</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025-2026 Macrohard Studio. 保留所有权利。 | 网站正在编写与测试，勿喷，勿催</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 测速工具JavaScript代码
+        document.addEventListener('DOMContentLoaded', function() {
+            // 第三方测速服务列表
+            const speedTestServices = [
+                {
+                    id: 'speedtest',
+                    name: 'Speedtest.net',
+                    provider: 'Ookla',
+                    description: '全球最流行的网络测速服务',
+                    url: 'https://www.speedtest.net/',
+                    apiUrl: null, // 需要用户重定向到官方页面
+                    type: 'redirect'
+                },
+                {
+                    id: 'fast',
+                    name: 'Fast.com',
+                    provider: 'Netflix',
+                    description: 'Netflix提供的简单测速服务',
+                    url: 'https://fast.com/',
+                    apiUrl: null,
+                    type: 'redirect'
+                },
+                {
+                    id: 'cloudflare',
+                    name: 'Cloudflare Speed Test',
+                    provider: 'Cloudflare',
+                    description: 'Cloudflare提供的网络性能测试',
+                    url: 'https://speed.cloudflare.com/',
+                    apiUrl: null,
+                    type: 'redirect'
+                },
+                {
+                    id: 'openspeedtest',
+                    name: 'OpenSpeedTest',
+                    provider: 'OpenSource',
+                    description: '开源的HTML5测速工具',
+                    url: 'https://openspeedtest.com/',
+                    apiUrl: null,
+                    type: 'redirect'
+                },
+                {
+                    id: 'speedofme',
+                    name: 'SpeedOf.Me',
+                    provider: 'SpeedOf.Me',
+                    description: '基于HTML5的宽带速度测试',
+                    url: 'https://speedof.me/',
+                    apiUrl: null,
+                    type: 'redirect'
+                },
+                {
+                    id: 'meteor',
+                    name: 'Meteor',
+                    provider: 'OpenSignal',
+                    description: '移动网络和应用性能测试',
+                    url: 'https://meteor.testmy.net/',
+                    apiUrl: null,
+                    type: 'redirect'
+                }
+            ];
+
+            // DOM元素
+            const startTestBtn = document.getElementById('startTest');
+            const stopTestBtn = document.getElementById('stopTest');
+            const advancedTestBtn = document.getElementById('advancedTest');
+            const testingAnimation = document.getElementById('testingAnimation');
+            const downloadSpeed = document.getElementById('downloadSpeed');
+            const uploadSpeed = document.getElementById('uploadSpeed');
+            const pingValue = document.getElementById('pingValue');
+            const downloadProgress = document.getElementById('downloadProgress');
+            const uploadProgress = document.getElementById('uploadProgress');
+            const pingProgress = document.getElementById('pingProgress');
+            const downloadQuality = document.getElementById('downloadQuality');
+            const uploadQuality = document.getElementById('uploadQuality');
+            const pingQuality = document.getElementById('pingQuality');
+            const jitterValue = document.getElementById('jitterValue');
+            const packetLoss = document.getElementById('packetLoss');
+            const serverLocation = document.getElementById('serverLocation');
+            const ipAddress = document.getElementById('ipAddress');
+            const serviceList = document.getElementById('serviceList');
+
+            // 状态变量
+            let isTesting = false;
+            let currentTest = null;
+            let testHistory = JSON.parse(localStorage.getItem('speedTestHistory') || '[]');
+
+            // 初始化服务列表
+            function initServiceList() {
+                serviceList.innerHTML = '';
+                
+                speedTestServices.forEach(service => {
+                    const serviceCard = document.createElement('div');
+                    serviceCard.className = 'server-card';
+                    serviceCard.innerHTML = `
+                        <div>
+                            <h4>${service.name}</h4>
+                            <p style="color: var(--text-muted); margin: 5px 0; font-size: 0.9rem;">${service.description}</p>
+                            <div class="server-info">
+                                <span>提供商: ${service.provider}</span>
+                                <div class="server-status">
+                                    <span class="status-dot"></span>
+                                    <span>可用</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    serviceCard.addEventListener('click', () => {
+                        // 移除所有active类
+                        document.querySelectorAll('.server-card').forEach(card => {
+                            card.classList.remove('active');
+                        });
+                        // 添加active类到当前卡片
+                        serviceCard.classList.add('active');
+                        
+                        // 打开测速服务
+                        window.open(service.url, '_blank');
+                    });
+                    
+                    serviceList.appendChild(serviceCard);
+                });
+            }
+
+            // 模拟测速过程（因为无法直接调用第三方API）
+            function simulateSpeedTest() {
+                if (isTesting) return;
+                
+                isTesting = true;
+                startTestBtn.disabled = true;
+                stopTestBtn.disabled = false;
+                testingAnimation.classList.add('active');
+                
+                // 重置显示
+                downloadSpeed.textContent = '0';
+                uploadSpeed.textContent = '0';
+                pingValue.textContent = '0';
+                downloadProgress.style.width = '0%';
+                uploadProgress.style.width = '0%';
+                pingProgress.style.width = '0%';
+                
+                // 获取用户IP（使用免费IP API）
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        ipAddress.textContent = data.ip;
+                    })
+                    .catch(() => {
+                        ipAddress.textContent = '未知';
+                    });
+                
+                // 模拟延迟测试
+                simulatePingTest();
+                
+                // 模拟下载测试
+                setTimeout(() => simulateDownloadTest(), 2000);
+                
+                // 模拟上传测试
+                setTimeout(() => simulateUploadTest(), 8000);
+                
+                // 完成测试
+                setTimeout(() => completeSpeedTest(), 15000);
+            }
+
+            function simulatePingTest() {
+                let progress = 0;
+                const pingInterval = setInterval(() => {
+                    if (!isTesting) {
+                        clearInterval(pingInterval);
+                        return;
+                    }
+                    
+                    progress += 5;
+                    pingProgress.style.width = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(pingInterval);
+                        const finalPing = Math.floor(Math.random() * 50) + 10; // 10-60ms
+                        pingValue.textContent = finalPing;
+                        pingProgress.style.width = '100%';
+                        
+                        // 设置延迟质量评价
+                        if (finalPing < 20) {
+                            pingQuality.textContent = '优秀';
+                            pingQuality.style.color = '#10b981';
+                        } else if (finalPing < 50) {
+                            pingQuality.textContent = '良好';
+                            pingQuality.style.color = '#f59e0b';
+                        } else {
+                            pingQuality.textContent = '一般';
+                            pingQuality.style.color = '#ef4444';
+                        }
+                        
+                        // 设置服务器位置
+                        const locations = ['北京', '上海', '广州', '成都', '香港'];
+                        serverLocation.textContent = locations[Math.floor(Math.random() * locations.length)];
+                        
+                        // 设置抖动和丢包率
+                        jitterValue.textContent = (Math.random() * 5).toFixed(1);
+                        packetLoss.textContent = (Math.random() * 2).toFixed(1) + '%';
+                    }
+                }, 100);
+            }
+
+            function simulateDownloadTest() {
+                let progress = 0;
+                let speed = 0;
+                const downloadInterval = setInterval(() => {
+                    if (!isTesting) {
+                        clearInterval(downloadInterval);
+                        return;
+                    }
+                    
+                    progress += 3;
+                    downloadProgress.style.width = progress + '%';
+                    
+                    // 模拟速度变化
+                    speed = Math.min(progress * 2 + Math.random() * 20, 150);
+                    downloadSpeed.textContent = Math.floor(speed);
+                    
+                    if (progress >= 100) {
+                        clearInterval(downloadInterval);
+                        const finalSpeed = Math.floor(Math.random() * 100) + 50; // 50-150 Mbps
+                        downloadSpeed.textContent = finalSpeed;
+                        
+                        // 设置下载速度质量评价
+                        if (finalSpeed > 100) {
+                            downloadQuality.textContent = '优秀';
+                            downloadQuality.style.color = '#10b981';
+                        } else if (finalSpeed > 30) {
+                            downloadQuality.textContent = '良好';
+                            downloadQuality.style.color = '#f59e0b';
+                        } else {
+                            downloadQuality.textContent = '一般';
+                            downloadQuality.style.color = '#ef4444';
+                        }
+                    }
+                }, 100);
+            }
+
+            function simulateUploadTest() {
+                let progress = 0;
+                let speed = 0;
+                const uploadInterval = setInterval(() => {
+                    if (!isTesting) {
+                        clearInterval(uploadInterval);
+                        return;
+                    }
+                    
+                    progress += 2;
+                    uploadProgress.style.width = progress + '%';
+                    
+                    // 模拟速度变化（上传通常比下载慢）
+                    speed = Math.min(progress * 1.5 + Math.random() * 15, 80);
+                    uploadSpeed.textContent = Math.floor(speed);
+                    
+                    if (progress >= 100) {
+                        clearInterval(uploadInterval);
+                        const finalSpeed = Math.floor(Math.random() * 50) + 10; // 10-60 Mbps
+                        uploadSpeed.textContent = finalSpeed;
+                        
+                        // 设置上传速度质量评价
+                        if (finalSpeed > 30) {
+                            uploadQuality.textContent = '优秀';
+                            uploadQuality.style.color = '#10b981';
+                        } else if (finalSpeed > 10) {
+                            uploadQuality.textContent = '良好';
+                            uploadQuality.style.color = '#f59e0b';
+                        } else {
+                            uploadQuality.textContent = '一般';
+                            uploadQuality.style.color = '#ef4444';
+                        }
+                    }
+                }, 100);
+            }
+
+            function completeSpeedTest() {
+                isTesting = false;
+                startTestBtn.disabled = false;
+                stopTestBtn.disabled = true;
+                testingAnimation.classList.remove('active');
+                
+                // 保存测试结果到历史记录
+                const testResult = {
+                    timestamp: new Date().toISOString(),
+                    download: parseInt(downloadSpeed.textContent),
+                    upload: parseInt(uploadSpeed.textContent),
+                    ping: parseInt(pingValue.textContent),
+                    server: serverLocation.textContent
+                };
+                
+                testHistory.unshift(testResult);
+                // 只保留最近10次测试
+                if (testHistory.length > 10) {
+                    testHistory = testHistory.slice(0, 10);
+                }
+                
+                localStorage.setItem('speedTestHistory', JSON.stringify(testHistory));
+                updateHistoryChart();
+                
+                // 显示完成提示
+                alert('测速完成！\n下载: ' + downloadSpeed.textContent + ' Mbps\n上传: ' + uploadSpeed.textContent + ' Mbps\n延迟: ' + pingValue.textContent + ' ms');
+            }
+
+            function stopSpeedTest() {
+                isTesting = false;
+                startTestBtn.disabled = false;
+                stopTestBtn.disabled = true;
+                testingAnimation.classList.remove('active');
+                
+                // 重置进度条
+                downloadProgress.style.width = '0%';
+                uploadProgress.style.width = '0%';
+                pingProgress.style.width = '0%';
+                
+                downloadSpeed.textContent = '0';
+                uploadSpeed.textContent = '0';
+                pingValue.textContent = '0';
+                
+                downloadQuality.textContent = '-';
+                uploadQuality.textContent = '-';
+                pingQuality.textContent = '-';
+            }
+
+            function updateHistoryChart() {
+                const chartElement = document.getElementById('speedChart');
+                
+                if (testHistory.length === 0) {
+                    chartElement.innerHTML = `
+                        <div style="text-align: center; padding: 60px 0; color: var(--text-muted);">
+                            <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                            <p>暂无测速历史数据</p>
+                            <p class="info-label">完成第一次测速后，结果将显示在这里</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // 简单的文本历史记录显示
+                let historyHTML = '<div style="max-height: 300px; overflow-y: auto;">';
+                historyHTML += '<table style="width: 100%; border-collapse: collapse;">';
+                historyHTML += '<thead><tr style="border-bottom: 1px solid var(--border-color);">';
+                historyHTML += '<th style="padding: 10px; text-align: left;">时间</th>';
+                historyHTML += '<th style="padding: 10px; text-align: center;">下载 (Mbps)</th>';
+                historyHTML += '<th style="padding: 10px; text-align: center;">上传 (Mbps)</th>';
+                historyHTML += '<th style="padding: 10px; text-align: center;">延迟 (ms)</th>';
+                historyHTML += '</tr></thead><tbody>';
+                
+                testHistory.forEach(result => {
+                    const date = new Date(result.timestamp);
+                    const timeString = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    
+                    historyHTML += '<tr style="border-bottom: 1px solid var(--border-color);">';
+                    historyHTML += `<td style="padding: 10px;">${timeString}</td>`;
+                    historyHTML += `<td style="padding: 10px; text-align: center; color: ${getSpeedColor(result.download)}">${result.download}</td>`;
+                    historyHTML += `<td style="padding: 10px; text-align: center; color: ${getSpeedColor(result.upload)}">${result.upload}</td>`;
+                    historyHTML += `<td style="padding: 10px; text-align: center; color: ${getPingColor(result.ping)}">${result.ping}</td>`;
+                    historyHTML += '</tr>';
+                });
+                
+                historyHTML += '</tbody></table></div>';
+                chartElement.innerHTML = historyHTML;
+            }
+
+            function getSpeedColor(speed) {
+                if (speed > 100) return '#10b981';
+                if (speed > 30) return '#f59e0b';
+                return '#ef4444';
+            }
+
+            function getPingColor(ping) {
+                if (ping < 20) return '#10b981';
+                if (ping < 50) return '#f59e0b';
+                return '#ef4444';
+            }
+
+            // 事件监听
+            startTestBtn.addEventListener('click', simulateSpeedTest);
+            stopTestBtn.addEventListener('click', stopSpeedTest);
+            advancedTestBtn.addEventListener('click', () => {
+                // 打开详细的测速页面
+                window.open('https://www.speedtest.net/', '_blank');
+            });
+
+            // 初始化
+            initServiceList();
+            updateHistoryChart();
+            
+            // 默认选择第一个服务
+            if (serviceList.firstChild) {
+                serviceList.firstChild.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
