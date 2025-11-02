@@ -18,6 +18,7 @@
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-bottom: 30px;
+            border: 1px solid var(--border-color);
         }
         
         .speed-results {
@@ -51,11 +52,17 @@
             font-size: 2.5rem;
             font-weight: bold;
             margin: 10px 0;
+            color: white;
         }
         
         .speed-unit {
             font-size: 1rem;
             opacity: 0.9;
+            color: white;
+        }
+        
+        .speed-label {
+            color: white;
         }
         
         .speed-progress {
@@ -99,9 +106,10 @@
             background: var(--card-bg);
             padding: 20px;
             border-radius: 10px;
-            border: 2px solid transparent;
+            border: 2px solid var(--border-color);
             transition: all 0.3s ease;
             cursor: pointer;
+            color: var(--text-color);
         }
         
         .server-card:hover {
@@ -119,6 +127,7 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
+            color: var(--text-color);
         }
         
         .server-ping {
@@ -131,6 +140,7 @@
             align-items: center;
             gap: 5px;
             font-size: 0.9rem;
+            color: var(--text-color);
         }
         
         .status-dot {
@@ -154,6 +164,8 @@
             border-radius: 15px;
             padding: 25px;
             margin-top: 30px;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
         }
         
         .test-info {
@@ -163,6 +175,7 @@
             margin: 20px 0;
             flex-wrap: wrap;
             gap: 20px;
+            color: var(--text-color);
         }
         
         .info-item {
@@ -186,12 +199,14 @@
             margin-top: 10px;
             font-size: 0.9rem;
             opacity: 0.9;
+            color: white;
         }
         
         .testing-animation {
             display: none;
             text-align: center;
             margin: 20px 0;
+            color: var(--text-color);
         }
         
         .testing-animation.active {
@@ -228,6 +243,28 @@
             50% { opacity: 0.5; }
         }
         
+        /* 修复表格颜色 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: var(--text-color);
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        
+        tr:hover {
+            background: var(--hover-color);
+        }
+        
         @media (max-width: 768px) {
             .speed-value {
                 font-size: 2rem;
@@ -256,8 +293,8 @@
                     <li><a href="index.html">首页</a></li>
                     <li><a href="software.html">软件</a></li>
                     <li><a href="music.html">音乐</a></li>
-                    <li><a href="tools.html" class="active">小工具</a></li>
-                    <li><a href="reserved2.html">预留2</a></li>
+                    <li><a href="tools.html">小工具</a></li>
+                    <li><a href="speedtest.html" class="active">网络测速</a></li>
                     <li><a href="reserved3.html">预留3</a></li>
                     <li><a href="reserved4.html">预留4</a></li>
                     <li><a href="reserved5.html">预留5</a></li>
@@ -288,7 +325,7 @@
     <section class="speed-test">
         <div class="container">
             <div class="speed-test-container">
-                <h2 style="text-align: center; margin-bottom: 30px;">网络速度测试</h2>
+                <h2 style="text-align: center; margin-bottom: 30px; color: var(--text-color);">网络速度测试</h2>
                 
                 <div class="testing-animation" id="testingAnimation">
                     <div class="wave">
@@ -303,7 +340,7 @@
                 
                 <div class="speed-results">
                     <div class="speed-card">
-                        <i class="fas fa-download" style="font-size: 2rem;"></i>
+                        <i class="fas fa-download" style="font-size: 2rem; color: white;"></i>
                         <div class="speed-value" id="downloadSpeed">0</div>
                         <div class="speed-unit">Mbps</div>
                         <div class="speed-label">下载速度</div>
@@ -314,7 +351,7 @@
                     </div>
                     
                     <div class="speed-card">
-                        <i class="fas fa-upload" style="font-size: 2rem;"></i>
+                        <i class="fas fa-upload" style="font-size: 2rem; color: white;"></i>
                         <div class="speed-value" id="uploadSpeed">0</div>
                         <div class="speed-unit">Mbps</div>
                         <div class="speed-label">上传速度</div>
@@ -325,7 +362,7 @@
                     </div>
                     
                     <div class="speed-card">
-                        <i class="fas fa-signal" style="font-size: 2rem;"></i>
+                        <i class="fas fa-signal" style="font-size: 2rem; color: white;"></i>
                         <div class="speed-value" id="pingValue">0</div>
                         <div class="speed-unit">ms</div>
                         <div class="speed-label">延迟</div>
@@ -369,8 +406,8 @@
             </div>
             
             <div class="speed-test-container">
-                <h3>选择测速服务提供商</h3>
-                <p>选择不同的第三方测速服务进行测试</p>
+                <h3 style="color: var(--text-color);">选择测速服务提供商</h3>
+                <p style="color: var(--text-muted);">选择不同的第三方测速服务进行测试</p>
                 
                 <div class="server-list" id="serviceList">
                     <!-- 服务列表将通过JavaScript动态生成 -->
@@ -378,8 +415,8 @@
             </div>
             
             <div class="speed-test-container">
-                <h3>测速说明</h3>
-                <div style="line-height: 1.6;">
+                <h3 style="color: var(--text-color);">测速说明</h3>
+                <div style="line-height: 1.6; color: var(--text-color);">
                     <p><strong>如何使用：</strong></p>
                     <ul style="margin-left: 20px; margin-bottom: 20px;">
                         <li>点击"开始测速"按钮开始测试</li>
@@ -399,8 +436,8 @@
             </div>
             
             <div class="history-chart">
-                <h3>测速历史</h3>
-                <p>最近几次测速结果对比</p>
+                <h3 style="color: var(--text-color);">测速历史</h3>
+                <p style="color: var(--text-muted);">最近几次测速结果对比</p>
                 <div id="speedChart" style="height: 200px; margin-top: 20px;">
                     <div style="text-align: center; padding: 60px 0; color: var(--text-muted);">
                         <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 15px;"></i>
@@ -440,8 +477,8 @@
                         <ul>
                             <li><a href="software.html">AORE</a></li>
                             <li><a href="software.html">RCP3</a></li>
-                            <li><a href="tools.html">网络测速</a></li>
-                            <li><a href="">预留</a></li>
+                            <li><a href="tools.html">小工具集</a></li>
+                            <li><a href="speedtest.html">网络测速</a></li>
                         </ul>
                     </div>
                     
@@ -474,7 +511,7 @@
                     provider: 'Ookla',
                     description: '全球最流行的网络测速服务',
                     url: 'https://www.speedtest.net/',
-                    apiUrl: null, // 需要用户重定向到官方页面
+                    apiUrl: null,
                     type: 'redirect'
                 },
                 {
@@ -586,7 +623,7 @@
                 });
             }
 
-            // 模拟测速过程（因为无法直接调用第三方API）
+            // 模拟测速过程
             function simulateSpeedTest() {
                 if (isTesting) return;
                 
@@ -603,7 +640,7 @@
                 uploadProgress.style.width = '0%';
                 pingProgress.style.width = '0%';
                 
-                // 获取用户IP（使用免费IP API）
+                // 获取用户IP
                 fetch('https://api.ipify.org?format=json')
                     .then(response => response.json())
                     .then(data => {
@@ -639,11 +676,10 @@
                     
                     if (progress >= 100) {
                         clearInterval(pingInterval);
-                        const finalPing = Math.floor(Math.random() * 50) + 10; // 10-60ms
+                        const finalPing = Math.floor(Math.random() * 50) + 10;
                         pingValue.textContent = finalPing;
                         pingProgress.style.width = '100%';
                         
-                        // 设置延迟质量评价
                         if (finalPing < 20) {
                             pingQuality.textContent = '优秀';
                             pingQuality.style.color = '#10b981';
@@ -655,11 +691,9 @@
                             pingQuality.style.color = '#ef4444';
                         }
                         
-                        // 设置服务器位置
                         const locations = ['北京', '上海', '广州', '成都', '香港'];
                         serverLocation.textContent = locations[Math.floor(Math.random() * locations.length)];
                         
-                        // 设置抖动和丢包率
                         jitterValue.textContent = (Math.random() * 5).toFixed(1);
                         packetLoss.textContent = (Math.random() * 2).toFixed(1) + '%';
                     }
@@ -678,16 +712,14 @@
                     progress += 3;
                     downloadProgress.style.width = progress + '%';
                     
-                    // 模拟速度变化
                     speed = Math.min(progress * 2 + Math.random() * 20, 150);
                     downloadSpeed.textContent = Math.floor(speed);
                     
                     if (progress >= 100) {
                         clearInterval(downloadInterval);
-                        const finalSpeed = Math.floor(Math.random() * 100) + 50; // 50-150 Mbps
+                        const finalSpeed = Math.floor(Math.random() * 100) + 50;
                         downloadSpeed.textContent = finalSpeed;
                         
-                        // 设置下载速度质量评价
                         if (finalSpeed > 100) {
                             downloadQuality.textContent = '优秀';
                             downloadQuality.style.color = '#10b981';
@@ -714,16 +746,14 @@
                     progress += 2;
                     uploadProgress.style.width = progress + '%';
                     
-                    // 模拟速度变化（上传通常比下载慢）
                     speed = Math.min(progress * 1.5 + Math.random() * 15, 80);
                     uploadSpeed.textContent = Math.floor(speed);
                     
                     if (progress >= 100) {
                         clearInterval(uploadInterval);
-                        const finalSpeed = Math.floor(Math.random() * 50) + 10; // 10-60 Mbps
+                        const finalSpeed = Math.floor(Math.random() * 50) + 10;
                         uploadSpeed.textContent = finalSpeed;
                         
-                        // 设置上传速度质量评价
                         if (finalSpeed > 30) {
                             uploadQuality.textContent = '优秀';
                             uploadQuality.style.color = '#10b981';
@@ -744,7 +774,6 @@
                 stopTestBtn.disabled = true;
                 testingAnimation.classList.remove('active');
                 
-                // 保存测试结果到历史记录
                 const testResult = {
                     timestamp: new Date().toISOString(),
                     download: parseInt(downloadSpeed.textContent),
@@ -754,7 +783,6 @@
                 };
                 
                 testHistory.unshift(testResult);
-                // 只保留最近10次测试
                 if (testHistory.length > 10) {
                     testHistory = testHistory.slice(0, 10);
                 }
@@ -762,7 +790,6 @@
                 localStorage.setItem('speedTestHistory', JSON.stringify(testHistory));
                 updateHistoryChart();
                 
-                // 显示完成提示
                 alert('测速完成！\n下载: ' + downloadSpeed.textContent + ' Mbps\n上传: ' + uploadSpeed.textContent + ' Mbps\n延迟: ' + pingValue.textContent + ' ms');
             }
 
@@ -772,7 +799,6 @@
                 stopTestBtn.disabled = true;
                 testingAnimation.classList.remove('active');
                 
-                // 重置进度条
                 downloadProgress.style.width = '0%';
                 uploadProgress.style.width = '0%';
                 pingProgress.style.width = '0%';
@@ -800,25 +826,24 @@
                     return;
                 }
                 
-                // 简单的文本历史记录显示
                 let historyHTML = '<div style="max-height: 300px; overflow-y: auto;">';
-                historyHTML += '<table style="width: 100%; border-collapse: collapse;">';
-                historyHTML += '<thead><tr style="border-bottom: 1px solid var(--border-color);">';
-                historyHTML += '<th style="padding: 10px; text-align: left;">时间</th>';
-                historyHTML += '<th style="padding: 10px; text-align: center;">下载 (Mbps)</th>';
-                historyHTML += '<th style="padding: 10px; text-align: center;">上传 (Mbps)</th>';
-                historyHTML += '<th style="padding: 10px; text-align: center;">延迟 (ms)</th>';
+                historyHTML += '<table>';
+                historyHTML += '<thead><tr>';
+                historyHTML += '<th>时间</th>';
+                historyHTML += '<th style="text-align: center;">下载 (Mbps)</th>';
+                historyHTML += '<th style="text-align: center;">上传 (Mbps)</th>';
+                historyHTML += '<th style="text-align: center;">延迟 (ms)</th>';
                 historyHTML += '</tr></thead><tbody>';
                 
                 testHistory.forEach(result => {
                     const date = new Date(result.timestamp);
                     const timeString = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     
-                    historyHTML += '<tr style="border-bottom: 1px solid var(--border-color);">';
-                    historyHTML += `<td style="padding: 10px;">${timeString}</td>`;
-                    historyHTML += `<td style="padding: 10px; text-align: center; color: ${getSpeedColor(result.download)}">${result.download}</td>`;
-                    historyHTML += `<td style="padding: 10px; text-align: center; color: ${getSpeedColor(result.upload)}">${result.upload}</td>`;
-                    historyHTML += `<td style="padding: 10px; text-align: center; color: ${getPingColor(result.ping)}">${result.ping}</td>`;
+                    historyHTML += '<tr>';
+                    historyHTML += `<td>${timeString}</td>`;
+                    historyHTML += `<td style="text-align: center; color: ${getSpeedColor(result.download)}">${result.download}</td>`;
+                    historyHTML += `<td style="text-align: center; color: ${getSpeedColor(result.upload)}">${result.upload}</td>`;
+                    historyHTML += `<td style="text-align: center; color: ${getPingColor(result.ping)}">${result.ping}</td>`;
                     historyHTML += '</tr>';
                 });
                 
@@ -842,7 +867,6 @@
             startTestBtn.addEventListener('click', simulateSpeedTest);
             stopTestBtn.addEventListener('click', stopSpeedTest);
             advancedTestBtn.addEventListener('click', () => {
-                // 打开详细的测速页面
                 window.open('https://www.speedtest.net/', '_blank');
             });
 
@@ -850,7 +874,6 @@
             initServiceList();
             updateHistoryChart();
             
-            // 默认选择第一个服务
             if (serviceList.firstChild) {
                 serviceList.firstChild.classList.add('active');
             }
