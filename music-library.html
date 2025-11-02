@@ -842,6 +842,8 @@
                 <option value="githack">GitHack CDN</option>
                 <option value="statically">Statically CDN</option>
                 <option value="cloudflare">Cloudflare Pages</option>
+                <option value="gitcdn">GitCDN</option>
+                <option value="rawgithub">Raw GitHub</option>
             </select>
             <div class="mirror-info">
                 <span class="mirror-status">
@@ -1047,27 +1049,42 @@
             libraryUrl: 'https://raw.githubusercontent.com/Macrohard0001-m01/Macrohard0001-m01.github.io/main/data/music-library.json',
             // 播放清单URL模板，{id}会被替换为播放清单ID
             playlistUrlTemplate: 'https://raw.githubusercontent.com/Macrohard0001-m01/Macrohard0001-m01.github.io/main/data/playlists/{id}.json',
-            // 镜像站点配置
+            // 镜像站点配置 - 修复版
             mirrors: {
                 default: {
                     name: '默认站点',
-                    baseUrl: '/music/'
+                    baseUrl: '/music/',
+                    testFile: '001/(It Goes Like) Nanana (Edit).mp3'
                 },
                 jsdelivr: {
                     name: 'jsDelivr CDN',
-                    baseUrl: 'https://cdn.jsdelivr.net/gh/Macrohard0001-m01/Macrohard0001-m01.github.io/music/'
+                    baseUrl: 'https://cdn.jsdelivr.net/gh/Macrohard0001-m01/Macrohard0001-m01.github.io/music/',
+                    testFile: '001/(It Goes Like) Nanana (Edit).mp3'
                 },
                 githack: {
                     name: 'GitHack CDN',
-                    baseUrl: 'https://raw.githack.com/Macrohard0001-m01/Macrohard0001-m01.github.io/main/music/'
+                    baseUrl: 'https://raw.githack.com/Macrohard0001-m01/Macrohard0001-m01.github.io/main/music/',
+                    testFile: '001/(It Goes Like) Nanana (Edit).mp3'
                 },
                 statically: {
                     name: 'Statically CDN',
-                    baseUrl: 'https://cdn.statically.io/gh/Macrohard0001-m01/Macrohard0001-m01.github.io/main/music/'
+                    baseUrl: 'https://cdn.statically.io/gh/Macrohard0001-m01/Macrohard0001-m01.github.io/main/music/',
+                    testFile: '001/(It Goes Like) Nanana (Edit).mp3'
                 },
                 cloudflare: {
-                    name: 'Cloudflare Pages',
-                    baseUrl: 'https://macrohard0001-m01.pages.dev/music/'
+                    name: 'Cloudflare Pages', 
+                    baseUrl: 'https://macrohard0001-m01.pages.dev/music/',
+                    testFile: '001/(It Goes Like) Nanana (Edit).mp3'
+                },
+                gitcdn: {
+                    name: 'GitCDN',
+                    baseUrl: 'https://gitcdn.link/cdn/Macrohard0001-m01/Macrohard0001-m01.github.io/main/music/',
+                    testFile: '001/(It Goes Like) Nanana (Edit).mp3'
+                },
+                rawgithub: {
+                    name: 'Raw GitHub',
+                    baseUrl: 'https://raw.githubusercontent.com/Macrohard0001-m01/Macrohard0001-m01.github.io/main/music/',
+                    testFile: '001/(It Goes Like) Nanana (Edit).mp3'
                 }
             }
         };
@@ -1169,6 +1186,11 @@
             loadSavedPlaylist();
             loadMirrorPreference();
             loadPreloadSetting();
+            
+            // 初始健康检查
+            setTimeout(() => {
+                checkMirrorHealth();
+            }, 2000);
         }
 
         // 加载曲库数据
@@ -1266,13 +1288,25 @@
             
             try {
                 const mirror = CONFIG.mirrors[mirrorId];
+                if (!mirror) {
+                    throw new Error('镜像站配置不存在');
+                }
                 
-                // 使用第一个歌曲进行测试（修复URL编码问题）
-                const testSongPath = encodeURIComponent('001/(It Goes Like) Nanana (Edit).mp3').replace(/%28/g, '(').replace(/%29/g, ')');
-                const testSongUrl = mirror.baseUrl + testSongPath;
+                // 使用测试文件
+                const testFileUrl = mirror.baseUrl + (mirror.testFile || '001/(It Goes Like) Nanana (Edit).mp3');
+                
+                // 创建带超时的AbortController
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000); // 8秒超时
                 
                 // 创建测试请求
-                const response = await fetch(testSongUrl, { method: 'HEAD' });
+                const response = await fetch(testFileUrl, { 
+                    method: 'HEAD',
+                    signal: controller.signal,
+                    cache: 'no-cache'
+                });
+                
+                clearTimeout(timeoutId);
                 
                 if (response.ok) {
                     updateMirrorStatus('ready', '连接正常');
@@ -1346,7 +1380,7 @@
             }
         }
 
-        // 测试单个镜像站速度
+        // 测试单个镜像站速度 - 修复版
         async function testMirrorSpeed(mirrorId, mirror) {
             const result = {
                 id: mirrorId,
@@ -1358,13 +1392,23 @@
             };
             
             try {
-                // 使用一个小文件进行测速（这里使用一个1MB的测试文件）
-                const testFileUrl = mirror.baseUrl + '001/(It Goes Like) Nanana (Edit).mp3';
+                // 使用测试文件
+                const testFileUrl = mirror.baseUrl + (mirror.testFile || '001/(It Goes Like) Nanana (Edit).mp3');
+                
+                // 创建带超时的AbortController
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
                 
                 // 测试响应时间
                 const startTime = performance.now();
-                const response = await fetch(testFileUrl, { method: 'HEAD' });
+                const response = await fetch(testFileUrl, { 
+                    method: 'HEAD',
+                    signal: controller.signal,
+                    cache: 'no-cache'
+                });
                 const endTime = performance.now();
+                
+                clearTimeout(timeoutId);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
@@ -1375,15 +1419,19 @@
                 
                 // 如果有Content-Length，可以估算下载速度
                 const contentLength = response.headers.get('content-length');
-                if (contentLength) {
-                    // 这里简化处理，实际下载速度测试需要下载部分数据
+                if (contentLength && result.responseTime > 0) {
+                    // 计算下载速度 (KB/s)
                     result.downloadSpeed = Math.round((contentLength / 1024) / (result.responseTime / 1000));
                 }
                 
             } catch (error) {
                 result.success = false;
-                result.error = error.message;
-                result.responseTime = 9999; // 设置一个很大的值表示超时
+                if (error.name === 'AbortError') {
+                    result.error = '请求超时';
+                } else {
+                    result.error = error.message;
+                }
+                result.responseTime = 9999;
             }
             
             return result;
@@ -1433,7 +1481,7 @@
                 if (result.success) {
                     statusHtml = `<span class="speed-value speed-good">正常</span>`;
                 } else {
-                    statusHtml = `<span class="speed-value speed-slow">失败: ${result.error}</span>`;
+                    statusHtml = `<span class="speed-value speed-slow" title="${result.error}">失败</span>`;
                 }
                 
                 let speedHtml = '';
@@ -1444,11 +1492,12 @@
                 }
                 
                 const isRecommended = index === 0 && result.success;
+                const responseTime = result.responseTime === 9999 ? '超时' : `${result.responseTime}ms`;
                 
                 row.innerHTML = `
-                    <td><span class="speed-rank ${index < 3 ? `speed-rank-${index + 1}` : ''}">${index + 1}</span></td>
+                    <td><span class="speed-rank ${index < 3 && result.success ? `speed-rank-${index + 1}` : ''}">${index + 1}</span></td>
                     <td>${result.name} ${isRecommended ? '<span class="recommended-badge">推荐</span>' : ''}</td>
-                    <td><span class="speed-value ${getResponseTimeClass(result.responseTime)}">${result.responseTime}ms</span></td>
+                    <td><span class="speed-value ${getResponseTimeClass(result.responseTime)}">${responseTime}</span></td>
                     <td>${speedHtml}</td>
                     <td>${statusHtml}</td>
                 `;
@@ -1494,6 +1543,32 @@
             }
         }
 
+        // 镜像站健康检查
+        async function checkMirrorHealth() {
+            const healthResults = [];
+            
+            for (const [mirrorId, mirror] of Object.entries(CONFIG.mirrors)) {
+                try {
+                    const testUrl = mirror.baseUrl + (mirror.testFile || '001/(It Goes Like) Nanana (Edit).mp3');
+                    const response = await fetch(testUrl, { method: 'HEAD' });
+                    healthResults.push({
+                        id: mirrorId,
+                        name: mirror.name,
+                        healthy: response.ok
+                    });
+                } catch (error) {
+                    healthResults.push({
+                        id: mirrorId,
+                        name: mirror.name,
+                        healthy: false
+                    });
+                }
+            }
+            
+            console.log('镜像站健康状态:', healthResults);
+            return healthResults;
+        }
+
         // 加载用户偏好的镜像站
         function loadMirrorPreference() {
             const savedMirror = localStorage.getItem('preferredMirror');
@@ -1506,18 +1581,33 @@
             testMirror(state.currentMirror);
         }
 
-        // 获取歌曲的完整URL（根据当前镜像站点）- 修复URL编码问题
+        // 获取歌曲的完整URL（根据当前镜像站点）- 增强版
         function getSongUrl(songPath) {
             const mirror = CONFIG.mirrors[state.currentMirror];
+            if (!mirror) {
+                console.error('镜像站配置不存在:', state.currentMirror);
+                return '';
+            }
             
-            // 对路径进行编码，但保留括号（因为有些CDN对括号有特殊处理）
-            let encodedPath = encodeURIComponent(songPath)
+            // 对路径进行编码，但保留常见特殊字符
+            let encodedPath = encodeURI(songPath)
                 .replace(/%28/g, '(')
                 .replace(/%29/g, ')')
                 .replace(/%5B/g, '[')
-                .replace(/%5D/g, ']');
+                .replace(/%5D/g, ']')
+                .replace(/%20/g, ' ')
+                .replace(/%27/g, "'")
+                .replace(/%21/g, '!');
             
-            return mirror.baseUrl + encodedPath;
+            // 对于某些CDN，可能需要不同的编码方式
+            if (state.currentMirror === 'statically') {
+                // Statically CDN 对特殊字符处理更严格
+                encodedPath = songPath; // 尝试不编码
+            }
+            
+            const fullUrl = mirror.baseUrl + encodedPath;
+            console.log(`生成URL [${mirror.name}]:`, fullUrl);
+            return fullUrl;
         }
 
         // 刷新音乐数据
@@ -1755,8 +1845,8 @@
             });
         }
 
-        // 播放歌曲 - 修复带括号歌曲的播放问题
-        function playSong(songId) {
+        // 播放歌曲 - 增强版带备用策略
+        async function playSong(songId) {
             const song = state.musicLibrary.songs.find(s => s.id === songId);
             if (!song) return;
             
@@ -1764,40 +1854,79 @@
             state.isPlaying = true;
             state.nextSongPreloaded = false;
             
-            // 检查是否有预加载的缓存
-            if (state.audioCache.has(songId)) {
-                const cachedAudio = state.audioCache.get(songId);
-                state.audioElement = cachedAudio;
-                setupAudioEvents();
-            } else {
-                // 设置音频源（使用当前镜像站点）- 修复URL编码问题
-                const songUrl = getSongUrl(song.url);
-                console.log('尝试播放:', songUrl); // 调试信息
-                
-                state.audioElement.src = songUrl;
+            // 尝试多个URL策略
+            const playStrategies = [
+                () => playWithEncodedUrl(song),
+                () => playWithRawUrl(song),
+                () => playWithAlternativeCDN(song)
+            ];
+            
+            for (let i = 0; i < playStrategies.length; i++) {
+                try {
+                    await playStrategies[i]();
+                    break; // 成功则退出循环
+                } catch (error) {
+                    console.log(`播放策略 ${i + 1} 失败:`, error);
+                    if (i === playStrategies.length - 1) {
+                        // 所有策略都失败
+                        alert(`播放失败: ${error.message}`);
+                        state.isPlaying = false;
+                        playPauseIcon.className = 'fas fa-play';
+                    }
+                }
             }
+        }
+
+        // 使用编码URL播放
+        async function playWithEncodedUrl(song) {
+            const songUrl = getSongUrl(song.url);
+            return await playAudio(songUrl, song);
+        }
+
+        // 使用原始URL播放
+        async function playWithRawUrl(song) {
+            const mirror = CONFIG.mirrors[state.currentMirror];
+            const rawUrl = mirror.baseUrl + song.url; // 不编码
+            return await playAudio(rawUrl, song);
+        }
+
+        // 使用备选CDN播放
+        async function playWithAlternativeCDN(song) {
+            // 切换到jsDelivr作为备选
+            const altMirror = CONFIG.mirrors.jsdelivr;
+            const altUrl = altMirror.baseUrl + encodeURIComponent(song.url)
+                .replace(/%28/g, '(').replace(/%29/g, ')');
             
-            state.audioElement.volume = state.volume;
-            
-            state.audioElement.play().catch(error => {
-                console.error('播放失败:', error);
+            console.log('尝试备选CDN:', altUrl);
+            return await playAudio(altUrl, song);
+        }
+
+        // 通用的音频播放函数
+        async function playAudio(url, song) {
+            return new Promise((resolve, reject) => {
+                // 检查是否有预加载的缓存
+                if (state.audioCache.has(song.id)) {
+                    const cachedAudio = state.audioCache.get(song.id);
+                    state.audioElement = cachedAudio;
+                    setupAudioEvents();
+                } else {
+                    state.audioElement.src = url;
+                }
                 
-                // 如果播放失败，尝试使用未编码的URL（某些服务器可能不需要编码）
-                const fallbackUrl = CONFIG.mirrors[state.currentMirror].baseUrl + song.url;
-                console.log('尝试备用URL:', fallbackUrl);
+                state.audioElement.volume = state.volume;
                 
-                state.audioElement.src = fallbackUrl;
-                state.audioElement.play().catch(fallbackError => {
-                    console.error('备用URL也失败:', fallbackError);
-                    alert('播放失败，请检查音乐文件路径或网络连接。错误: ' + fallbackError.message);
-                });
+                state.audioElement.play().then(() => {
+                    currentSongTitle.textContent = song.title;
+                    currentSongArtist.textContent = song.artist;
+                    playPauseIcon.className = 'fas fa-pause';
+                    updateSongUI(song.id);
+                    resolve();
+                }).catch(reject);
             });
-            
-            currentSongTitle.textContent = song.title;
-            currentSongArtist.textContent = song.artist;
-            playPauseIcon.className = 'fas fa-pause';
-            
-            // 更新UI
+        }
+
+        // 更新歌曲UI
+        function updateSongUI(songId) {
             document.querySelectorAll('.song-item').forEach(item => item.classList.remove('playing'));
             document.querySelectorAll('.song-item').forEach(item => {
                 if (parseInt(item.querySelector('.play-song').getAttribute('data-id')) === songId) {
