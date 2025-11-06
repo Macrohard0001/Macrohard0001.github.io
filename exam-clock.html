@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美化时钟 - Macrohard Studio</title>
+    <link rel="icon" href="https://github.com/Macrohard0001-m01/Macrohard0001-m01.github.io/blob/main/images/macrohard_icon_day.png?raw=true" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        
+        .dark-mode {
+            --primary-color: #34495e;
+            --secondary-color: #2980b9;
+            --accent-color: #c0392b;
+            --success-color: #27ae60;
+            --warning-color: #d35400;
+            --text-color: #ecf0f1;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .logo-icon {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 10px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: var(--transition);
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+        
+        .hamburger {
+            display: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            padding: 2rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* 考试时钟样式 */
+        .exam-clock-container {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .exam-config {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .config-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .config-label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        select, input {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .time-inputs {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .time-inputs input {
+            text-align: center;
+        }
+        
+        .time-inputs span {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .exam-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        /* 超大时钟区域 */
+        .clock-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(155, 89, 182, 0.1));
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+        
+        .clock-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+        }
+        
+        .date {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .current-time {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .clock {
+            font-size: 8rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            line-height: 1.1;
+            margin: 1rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border: 3px solid rgba(231, 76, 60, 0.3);
+            display: inline-block;
+            min-width: 500px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                0 8px 16px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .clock::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
+        }
+        
+        .clock:hover::after {
+            left: 100%;
+        }
+        
+        .timer-section {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            position: relative;
+        }
+        
+        .timer-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--success-color), var(--secondary-color));
+        }
+        
+        .timer-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .timer-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .timer-status {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: rgba(52, 152, 219, 0.2);
+        }
+        
+        .timer-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--success-color);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 15px;
+            display: inline-block;
+            min-width: 300px;
+        }
+        
+        /* 美化进度条 */
+        .progress-container {
+            margin: 2rem 0;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+        
+        .progress-bar {
+            height: 16px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, 
+                var(--success-color), 
+                #27ae60, 
+                #2ecc71, 
+                #3498db, 
+                var(--secondary-color));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+            position: relative;
+            box-shadow: 0 2px 4px rgba(46, 204, 113, 0.3);
+        }
+        
+        .progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-percent {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .warning {
+            color: var(--warning-color);
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(231, 76, 60, 0.1));
+            border-radius: var(--border-radius);
+            display: none;
+            animation: pulse 2s infinite;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        @keyframes pulse {
+            0% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 0 0 10px rgba(243, 156, 18, 0);
+            }
+            100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(243, 156, 18, 0);
+            }
+        }
+        
+        .critical {
+            color: var(--accent-color);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1));
+            border-left: 4px solid var(--accent-color);
+            animation: critical-pulse 1s infinite;
+        }
+        
+        @keyframes critical-pulse {
+            0% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+            }
+            50% { 
+                transform: scale(1.03);
+                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+            }
+            100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+            }
+        }
+        
+        .exam-period {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .period-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .period-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .period-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+        
+        .period-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        .fullscreen-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0 1rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-logo-icon {
+            height: 30px;
+            margin-right: 10px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 2;
+            justify-content: space-around;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .clock {
+                font-size: 5rem;
+                min-width: 300px;
+            }
+            
+            .timer-display {
+                font-size: 2.5rem;
+                min-width: 250px;
+            }
+            
+            .exam-config {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .clock {
+                font-size: 4rem;
+                min-width: 250px;
+                padding: 1rem;
+            }
+            
+            .timer-display {
+                font-size: 2rem;
+                min-width: 200px;
+            }
+        }
+        
+        /* 全屏模式下的样式 */
+        body:fullscreen .clock {
+            font-size: 12rem;
+        }
+        
+        body:fullscreen .timer-display {
+            font-size: 5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <!-- 使用您的网站图标 -->
+                    <img src="https://github.com/Macrohard0001-m01/Macrohard0001-m01.github.io/blob/main/images/macrohard_icon.png?raw=true" alt="Logo" class="logo-icon">
+                    <span>Macrohard Studio</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="software.html">软件</a></li>
+                    <li><a href="music.html">音乐</a></li>
+                    <li><a href="reserved1.html">预留1</a></li>
+                    <li><a href="reserved2.html">预留2</a></li>
+                    <li><a href="reserved3.html">预留3</a></li>
+                    <li><a href="reserved4.html">预留4</a></li>
+                    <li><a href="reserved5.html">预留5</a></li>
+                    <li><a href="sentiment.html">情怀与初衷</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+                <div class="nav-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="hamburger">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <div class="container">
+            <div class="section-title">
+                <h2>在线考试时钟</h2>
+                <p>美观的时间显示与进度条，专为高中考试设计</p>
+            </div>
+            
+            <div class="exam-clock-container">
+                <div class="exam-config">
+                    <div class="config-group">
+                        <label class="config-label">选择考试科目</label>
+                        <select id="subjectSelect">
+                            <option value="chinese">语文</option>
+                            <option value="math">数学</option>
+                            <option value="english">英语</option>
+                            <option value="physics">物理</option>
+                            <option value="chemistry">化学</option>
+                            <option value="biology">生物</option>
+                            <option value="politics">政治</option>
+                            <option value="history">历史</option>
+                            <option value="geography">地理</option>
+                            <option value="custom">自定义科目</option>
+                        </select>
+                    </div>
+                    
+                    <div class="config-group">
+                        <label class="config-label">自定义科目名称</label>
+                        <input type="text" id="customSubject" placeholder="输入科目名称" style="display: none;">
+                    </div>
+                    
+                    <div class="config-group">
+                        <label class="config-label">考试开始时间</label>
+                        <div class="time-inputs">
+                            <input type="number" id="startHour" placeholder="时" min="0" max="23" value="9">
+                            <span>:</span>
+                            <input type="number" id="startMinute" placeholder="分" min="0" max="59" value="0">
+                            <span>:</span>
+                            <input type="number" id="startSecond" placeholder="秒" min="0" max="59" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="config-group">
+                        <label class="config-label">考试时长(分钟)</label>
+                        <input type="number" id="examDuration" placeholder="输入考试时长" min="1" value="150">
+                    </div>
+                </div>
+                
+                <button class="btn" id="applyBtn" style="width: 100%;">应用设置</button>
+                
+                <div class="exam-info">
+                    <div class="info-item">
+                        <div class="info-label">考试科目</div>
+                        <div class="info-value" id="subject">语文</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">考试代码</div>
+                        <div class="info-value" id="examCode">GAOKAO-CHN-001</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">考试时长</div>
+                        <div class="info-value" id="duration">2小时30分钟</div>
+                    </div>
+                </div>
+                
+                <!-- 超大时钟区域 -->
+                <div class="clock-section">
+                    <div class="date" id="date">2023年11月15日 星期三</div>
+                    <div class="current-time">当前时间</div>
+                    <div class="clock" id="clock">00:00:00</div>
+                </div>
+                
+                <div class="timer-section">
+                    <div class="timer-header">
+                        <div class="timer-title">考试剩余时间</div>
+                        <div class="timer-status" id="timerStatus">未开始</div>
+                    </div>
+                    <div class="timer-display" id="timer">--:--:--</div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <span>考试进度</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progress">
+                                <div class="progress-percent" id="progressPercentText">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning" id="warning">距离考试结束还有15分钟，请合理安排时间！</div>
+                    
+                    <div class="exam-period">
+                        <div class="period-item">
+                            <div class="period-label">开始时间</div>
+                            <div class="period-value" id="startTime">09:00:00</div>
+                        </div>
+                        <div class="period-item">
+                            <div class="period-label">结束时间</div>
+                            <div class="period-value" id="endTime">11:30:00</div>
+                        </div>
+                        <div class="period-item">
+                            <div class="period-label">考试状态</div>
+                            <div class="period-value" id="examStatus">未开始</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="fullscreen-btn" id="fullscreenBtn" title="切换全屏">
+        <i class="fas fa-expand"></i>
+    </button>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="https://github.com/Macrohard0001-m01/Macrohard0001-m01.github.io/blob/main/images/macrohard_icon.png?raw=true" alt="Logo" class="footer-logo-icon">
+                        Macrohard Studio
+                    </div>
+                    <p>高中生的小站</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>快速链接</h3>
+                        <ul>
+                            <li><a href="https://github.com/Macrohard0001-m01">个人主页</a></li>
+                            <li><a href="https://github.com/Macrohard0001-m01" target="_blank">GitHub</a></li>
+                            <li><a href="https://chat.deepseek.com/" target="_blank">DeepSeek</a></li>
+                            <li><a href="https://docs.lxmusic.top/" target="_blank">LX Music</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>作品</h3>
+                        <ul>
+                            <li><a href="software.html">AORE</a></li>
+                            <li><a href="software.html">RCP3</a></li>
+                            <li><a href="#">预留</a></li>
+                            <li><a href="">预留</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>联系信息</h3>
+                        <ul>
+                            <li><i class="fas fa-envelope"></i> Macrohard0001_m01@outlook.com</li>
+                            <li><i class="fas fa-map-marker-alt"></i> hbzzzx</li>
+                            <li><i class="fas fa-clock"></i> 我很忙~</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025-2026 Macrohard Studio. 保留所有权利。 | 网站正在编写与测试，勿喷，勿催</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 获取DOM元素
+        const clockElement = document.getElementById('clock');
+        const dateElement = document.getElementById('date');
+        const timerElement = document.getElementById('timer');
+        const progressElement = document.getElementById('progress');
+        const progressPercentElement = document.getElementById('progressPercent');
+        const progressPercentTextElement = document.getElementById('progressPercentText');
+        const warningElement = document.getElementById('warning');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const startTimeElement = document.getElementById('startTime');
+        const endTimeElement = document.getElementById('endTime');
+        const durationElement = document.getElementById('duration');
+        const timerStatusElement = document.getElementById('timerStatus');
+        const examStatusElement = document.getElementById('examStatus');
+        const subjectElement = document.getElementById('subject');
+        const examCodeElement = document.getElementById('examCode');
+        const subjectSelect = document.getElementById('subjectSelect');
+        const customSubjectInput = document.getElementById('customSubject');
+        const startHourInput = document.getElementById('startHour');
+        const startMinuteInput = document.getElementById('startMinute');
+        const startSecondInput = document.getElementById('startSecond');
+        const examDurationInput = document.getElementById('examDuration');
+        const applyBtn = document.getElementById('applyBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // 高中科目配置
+        const subjectConfig = {
+            'chinese': { name: '语文', code: 'GAOKAO-CHN', duration: 150, warning: '请检查作文是否完成' },
+            'math': { name: '数学', code: 'GAOKAO-MATH', duration: 120, warning: '请仔细检查计算题' },
+            'english': { name: '英语', code: 'GAOKAO-ENG', duration: 120, warning: '请检查作文和阅读理解' },
+            'physics': { name: '物理', code: 'GAOKAO-PHY', duration: 90, warning: '请检查实验题和计算题' },
+            'chemistry': { name: '化学', code: 'GAOKAO-CHEM', duration: 90, warning: '请检查化学方程式和计算题' },
+            'biology': { name: '生物', code: 'GAOKAO-BIO', duration: 90, warning: '请检查遗传题和实验题' },
+            'politics': { name: '政治', code: 'GAOKAO-POL', duration: 90, warning: '请检查论述题和材料分析' },
+            'history': { name: '历史', code: 'GAOKAO-HIS', duration: 90, warning: '请检查材料解析和论述题' },
+            'geography': { name: '地理', code: 'GAOKAO-GEO', duration: 90, warning: '请检查地图题和综合题' },
+            'custom': { name: '自定义', code: 'CUSTOM', duration: 120, warning: '请合理安排剩余时间' }
+        };
+        
+        // 当前考试配置
+        let currentExam = {
+            subject: '语文',
+            code: 'GAOKAO-CHN-001',
+            startTime: null,
+            duration: 150 * 60 * 1000, // 默认150分钟
+            warningThreshold: 15 * 60 * 1000 // 提前15分钟提醒
+        };
+        
+        // 初始化考试信息
+        function initExam() {
+            const subject = subjectSelect.value;
+            const customSubject = customSubjectInput.value.trim();
+            
+            if (subject === 'custom' && customSubject) {
+                currentExam.subject = customSubject;
+                currentExam.code = 'CUSTOM-001';
+                currentExam.duration = parseInt(examDurationInput.value) * 60 * 1000;
+                currentExam.warningMessage = '请合理安排剩余时间';
+            } else {
+                const config = subjectConfig[subject];
+                currentExam.subject = config.name;
+                currentExam.code = `${config.code}-001`;
+                currentExam.duration = config.duration * 60 * 1000;
+                currentExam.warningMessage = config.warning;
+                
+                // 更新时长输入框
+                examDurationInput.value = config.duration;
+            }
+            
+            // 设置开始时间
+            const now = new Date();
+            currentExam.startTime = new Date(now);
+            currentExam.startTime.setHours(
+                parseInt(startHourInput.value),
+                parseInt(startMinuteInput.value),
+                parseInt(startSecondInput.value),
+                0
+            );
+            
+            // 更新显示
+            subjectElement.textContent = currentExam.subject;
+            examCodeElement.textContent = currentExam.code;
+            durationElement.textContent = formatDuration(currentExam.duration);
+            startTimeElement.textContent = formatTime(currentExam.startTime);
+            
+            const endTime = new Date(currentExam.startTime.getTime() + currentExam.duration);
+            endTimeElement.textContent = formatTime(endTime);
+            
+            // 重置状态
+            timerStatusElement.textContent = "未开始";
+            examStatusElement.textContent = "未开始";
+            timerElement.textContent = "--:--:--";
+            progressElement.style.width = "0%";
+            progressPercentElement.textContent = "0%";
+            progressPercentTextElement.textContent = "0%";
+            warningElement.style.display = "none";
+        }
+        
+        // 更新时钟
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('zh-CN');
+            const dateString = now.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            });
+            
+            clockElement.textContent = timeString;
+            dateElement.textContent = dateString;
+            
+            // 更新剩余时间
+            updateRemainingTime(now);
+        }
+        
+        // 更新剩余时间
+        function updateRemainingTime(now) {
+            if (!currentExam.startTime) return;
+            
+            // 计算剩余时间
+            const endTime = new Date(currentExam.startTime.getTime() + currentExam.duration);
+            let remainingTime = endTime.getTime() - now.getTime();
+            
+            // 考试状态
+            if (remainingTime < 0) {
+                // 考试已结束
+                timerElement.textContent = "00:00:00";
+                timerStatusElement.textContent = "已结束";
+                examStatusElement.textContent = "已结束";
+                timerElement.style.color = "#e74c3c";
+                progressElement.style.width = "100%";
+                progressElement.style.background = "#e74c3c";
+                progressPercentElement.textContent = "100%";
+                progressPercentTextElement.textContent = "100%";
+                warningElement.style.display = "none";
+                return;
+            } else if (now < currentExam.startTime) {
+                // 考试未开始
+                remainingTime = currentExam.startTime.getTime() - now.getTime();
+                timerStatusElement.textContent = "未开始";
+                examStatusElement.textContent = "未开始";
+                timerElement.style.color = "#f39c12";
+                progressElement.style.width = "0%";
+                progressPercentElement.textContent = "0%";
+                progressPercentTextElement.textContent = "0%";
+            } else {
+                // 考试进行中
+                timerStatusElement.textContent = "进行中";
+                examStatusElement.textContent = "进行中";
+                timerElement.style.color = "#2ecc71";
+                
+                // 更新进度条
+                const elapsed = now.getTime() - currentExam.startTime.getTime();
+                const progressPercent = (elapsed / currentExam.duration) * 100;
+                const roundedPercent = Math.min(Math.round(progressPercent), 100);
+                progressElement.style.width = `${progressPercent}%`;
+                progressPercentElement.textContent = `${roundedPercent}%`;
+                progressPercentTextElement.textContent = `${roundedPercent}%`;
+                
+                // 检查是否需要显示警告
+                if (remainingTime <= currentExam.warningThreshold) {
+                    warningElement.textContent = currentExam.warningMessage;
+                    warningElement.style.display = "block";
+                    
+                    // 最后5分钟改为红色警告
+                    if (remainingTime <= 5 * 60 * 1000) {
+                        warningElement.classList.add("critical");
+                        warningElement.textContent = "仅剩5分钟！请立即检查答题卡！";
+                    } else {
+                        warningElement.classList.remove("critical");
+                    }
+                } else {
+                    warningElement.style.display = "none";
+                }
+            }
+            
+            // 更新剩余时间显示
+            const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+            
+            timerElement.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // 格式化时间
+        function formatTime(date) {
+            return date.toLocaleTimeString('zh-CN', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: false
+            });
+        }
+        
+        // 格式化时长
+        function formatDuration(milliseconds) {
+            const minutes = Math.floor(milliseconds / (1000 * 60));
+            const hours = Math.floor(minutes / 60);
+            const remainingMinutes = minutes % 60;
+            
+            if (hours > 0 && remainingMinutes > 0) {
+                return `${hours}小时${remainingMinutes}分钟`;
+            } else if (hours > 0) {
+                return `${hours}小时`;
+            } else {
+                return `${remainingMinutes}分钟`;
+            }
+        }
+        
+        // 修复全屏功能
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                // 进入全屏
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+            } else {
+                // 退出全屏
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+        
+        // 更新全屏按钮图标
+        function updateFullscreenButton() {
+            const icon = fullscreenBtn.querySelector('i');
+            if (document.fullscreenElement) {
+                // 退出全屏图标
+                icon.className = 'fas fa-compress';
+            } else {
+                // 进入全屏图标
+                icon.className = 'fas fa-expand';
+            }
+        }
+        
+        // 切换主题
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        }
+        
+        // 事件监听
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        applyBtn.addEventListener('click', initExam);
+        themeToggle.addEventListener('click', toggleTheme);
+        subjectSelect.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customSubjectInput.style.display = 'block';
+            } else {
+                customSubjectInput.style.display = 'none';
+                initExam();
+            }
+        });
+        
+        // 监听全屏状态变化
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+        document.addEventListener('msfullscreenchange', updateFullscreenButton);
+        
+        // 初始化
+        initExam();
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
