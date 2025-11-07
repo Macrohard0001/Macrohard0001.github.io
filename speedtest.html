@@ -8,6 +8,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --hover-color: #f5f5f5;
+        }
+
+        .dark-mode {
+            --text-color: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --card-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #3a3a3a;
+        }
+
         .speed-test {
             padding: 60px 0;
         }
@@ -78,7 +95,7 @@
             height: 100%;
             background: white;
             border-radius: 4px;
-            transition: width 0.3 ease;
+            transition: width 0.3s ease;
             width: 0%;
         }
         
@@ -107,7 +124,7 @@
             padding: 20px;
             border-radius: 10px;
             border: 2px solid var(--border-color);
-            transition: all 0.3 ease;
+            transition: all 0.3s ease;
             cursor: pointer;
             color: var(--text-color);
         }
@@ -156,7 +173,7 @@
         
         .status-dot.loading {
             background: #f59e0b;
-            animation: pulse 1.5 infinite;
+            animation: pulse 1.5s infinite;
         }
         
         .history-chart {
@@ -225,13 +242,13 @@
             height: 20px;
             background: var(--primary-color);
             border-radius: 2px;
-            animation: wave 1.2 ease-in-out infinite;
+            animation: wave 1.2s ease-in-out infinite;
         }
         
-        .wave-bar:nth-child(2) { animation-delay: 0.1; }
-        .wave-bar:nth-child(3) { animation-delay: 0.2; }
-        .wave-bar:nth-child(4) { animation-delay: 0.3; }
-        .wave-bar:nth-child(5) { animation-delay: 0.4; }
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
         
         @keyframes wave {
             0%, 100% { transform: scaleY(1); }
@@ -293,8 +310,8 @@
                     <li><a href="index.html">首页</a></li>
                     <li><a href="software.html">软件</a></li>
                     <li><a href="music.html">音乐</a></li>
-                    <li><a href="speedtest.html">测速工具</a></li>
-                    <li><a href="exam-clock.html" class="active">考试时钟</a></li>
+                    <li><a href="speedtest.html" class="active">测速工具</a></li>
+                    <li><a href="exam-clock.html">考试时钟</a></li>
                     <li><a href="reserved3.html">预留3</a></li>
                     <li><a href="reserved4.html">预留4</a></li>
                     <li><a href="reserved5.html">预留5</a></li>
@@ -316,8 +333,8 @@
     <!-- 页面标题 -->
     <section class="hero">
         <div class="container">
-            <h1>网络测速工具</h1>
-            <p>使用第三方服务测试您的网络连接速度</p>
+            <h1 style="color: var(--text-color);">网络测速工具</h1>
+            <p style="color: var(--text-muted);">使用第三方服务测试您的网络连接速度</p>
         </div>
     </section>
 
@@ -499,10 +516,36 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
     <script>
-        // 测速工具JavaScript代码
+        // 主题切换功能
         document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // 主题切换事件
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            });
+            
+            // 测速工具JavaScript代码
             // 第三方测速服务列表
             const speedTestServices = [
                 {
