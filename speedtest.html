@@ -8,23 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        :root {
-            --primary-color: #4a6cf7;
-            --text-color: #333333;
-            --text-muted: #666666;
-            --card-bg: #ffffff;
-            --border-color: #e0e0e0;
-            --hover-color: #f5f5f5;
-        }
-
-        .dark-mode {
-            --text-color: #f0f0f0;
-            --text-muted: #aaaaaa;
-            --card-bg: #2d2d2d;
-            --border-color: #444444;
-            --hover-color: #3a3a3a;
-        }
-
         .speed-test {
             padding: 60px 0;
         }
@@ -333,8 +316,8 @@
     <!-- 页面标题 -->
     <section class="hero">
         <div class="container">
-            <h1 style="color: var(--text-color);">网络测速工具</h1>
-            <p style="color: var(--text-muted);">使用第三方服务测试您的网络连接速度</p>
+            <h1>网络测速工具</h1>
+            <p>使用第三方服务测试您的网络连接速度</p>
         </div>
     </section>
 
@@ -342,7 +325,7 @@
     <section class="speed-test">
         <div class="container">
             <div class="speed-test-container">
-                <h2 style="text-align: center; margin-bottom: 30px; color: var(--text-color);">网络速度测试</h2>
+                <h2 style="text-align: center; margin-bottom: 30px;">网络速度测试</h2>
                 
                 <div class="testing-animation" id="testingAnimation">
                     <div class="wave">
@@ -423,7 +406,7 @@
             </div>
             
             <div class="speed-test-container">
-                <h3 style="color: var(--text-color);">选择测速服务提供商</h3>
+                <h3>选择测速服务提供商</h3>
                 <p style="color: var(--text-muted);">选择不同的第三方测速服务进行测试</p>
                 
                 <div class="server-list" id="serviceList">
@@ -432,8 +415,8 @@
             </div>
             
             <div class="speed-test-container">
-                <h3 style="color: var(--text-color);">测速说明</h3>
-                <div style="line-height: 1.6; color: var(--text-color);">
+                <h3>测速说明</h3>
+                <div style="line-height: 1.6;">
                     <p><strong>如何使用：</strong></p>
                     <ul style="margin-left: 20px; margin-bottom: 20px;">
                         <li>点击"开始测速"按钮开始测试</li>
@@ -453,7 +436,7 @@
             </div>
             
             <div class="history-chart">
-                <h3 style="color: var(--text-color);">测速历史</h3>
+                <h3>测速历史</h3>
                 <p style="color: var(--text-muted);">最近几次测速结果对比</p>
                 <div id="speedChart" style="height: 200px; margin-top: 20px;">
                     <div style="text-align: center; padding: 60px 0; color: var(--text-muted);">
@@ -516,36 +499,10 @@
         </div>
     </footer>
 
+    <script src="js/main.js"></script>
     <script>
-        // 主题切换功能
+        // 测速工具JavaScript代码
         document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = themeToggle.querySelector('i');
-            
-            // 检查本地存储的主题设置
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            }
-            
-            // 主题切换事件
-            themeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('dark-mode');
-                
-                if (document.body.classList.contains('dark-mode')) {
-                    localStorage.setItem('theme', 'dark');
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                } else {
-                    localStorage.setItem('theme', 'light');
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                }
-            });
-            
-            // 测速工具JavaScript代码
             // 第三方测速服务列表
             const speedTestServices = [
                 {
