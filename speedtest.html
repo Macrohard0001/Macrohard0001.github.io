@@ -19,7 +19,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             border: 1px solid var(--border-color);
-            color: var(--text-color);
+            color: var(--text-color); /* 确保容器内文本颜色正确 */
         }
         
         .speed-results {
@@ -268,7 +268,13 @@
             background: var(--hover-color);
         }
         
-        /* 测速说明区域的文本颜色 */
+        /* 确保所有文本都使用正确的颜色 */
+        .speed-test-container h2,
+        .speed-test-container h3,
+        .speed-test-container p:not(.speed-instructions p) {
+            color: var(--text-color);
+        }
+        
         .speed-instructions {
             color: var(--text-color);
             line-height: 1.6;
@@ -281,6 +287,11 @@
         
         .speed-instructions li {
             margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        
+        .speed-instructions strong {
+            color: var(--text-color);
         }
         
         @media (max-width: 768px) {
@@ -613,13 +624,13 @@
                     serviceCard.className = 'server-card';
                     serviceCard.innerHTML = `
                         <div>
-                            <h4>${service.name}</h4>
+                            <h4 style="color: var(--text-color);">${service.name}</h4>
                             <p style="color: var(--text-muted); margin: 5px 0; font-size: 0.9rem;">${service.description}</p>
                             <div class="server-info">
-                                <span>提供商: ${service.provider}</span>
+                                <span style="color: var(--text-color);">提供商: ${service.provider}</span>
                                 <div class="server-status">
                                     <span class="status-dot"></span>
-                                    <span>可用</span>
+                                    <span style="color: var(--text-color);">可用</span>
                                 </div>
                             </div>
                         </div>
