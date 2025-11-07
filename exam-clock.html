@@ -52,7 +52,7 @@
         
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -293,26 +293,27 @@
             color: var(--primary-color);
         }
         
-        /* 加大时钟字体 - 第一处 */
+        /* 超大时钟字体 - 第一处 */
         .clock {
-            font-size: 10rem;
+            font-size: 16rem;
             font-weight: 900;
             color: var(--accent-color);
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-            line-height: 1.1;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+            line-height: 1;
             margin: 1rem 0;
-            padding: 1.5rem;
+            padding: 2rem;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            border: 3px solid rgba(231, 76, 60, 0.3);
+            border-radius: 25px;
+            border: 4px solid rgba(231, 76, 60, 0.4);
             display: inline-block;
-            min-width: 600px;
+            min-width: 800px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
             box-shadow: 
-                inset 0 2px 4px rgba(255, 255, 255, 0.2),
-                0 8px 16px rgba(0, 0, 0, 0.1);
+                inset 0 4px 8px rgba(255, 255, 255, 0.3),
+                0 12px 24px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
+            letter-spacing: 2px;
         }
         
         .clock::after {
@@ -322,7 +323,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: var(--transition);
         }
         
@@ -370,19 +371,21 @@
             background: rgba(52, 152, 219, 0.2);
         }
         
-        /* 加大计时器字体 - 第二处 */
+        /* 超大计时器字体 - 第二处 */
         .timer-display {
-            font-size: 5rem;
-            font-weight: bold;
+            font-size: 8rem;
+            font-weight: 900;
             text-align: center;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
             color: var(--success-color);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
             background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 15px;
+            padding: 2rem;
+            border-radius: 20px;
             display: inline-block;
-            min-width: 400px;
+            min-width: 600px;
+            border: 3px solid rgba(46, 204, 113, 0.3);
+            letter-spacing: 1px;
         }
         
         /* 智能进度条 */
@@ -399,11 +402,11 @@
         }
         
         .progress-bar {
-            height: 16px;
+            height: 20px;
             background-color: rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
             position: relative;
         }
         
@@ -644,6 +647,18 @@
         }
         
         /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .clock {
+                font-size: 12rem;
+                min-width: 600px;
+            }
+            
+            .timer-display {
+                font-size: 6rem;
+                min-width: 450px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -655,13 +670,15 @@
             
             /* 响应式调整时钟字体大小 */
             .clock {
-                font-size: 6rem;
+                font-size: 8rem;
                 min-width: 400px;
+                padding: 1.5rem;
             }
             
             .timer-display {
-                font-size: 3rem;
+                font-size: 4rem;
                 min-width: 300px;
+                padding: 1.5rem;
             }
             
             .exam-config {
@@ -679,24 +696,25 @@
         
         @media (max-width: 480px) {
             .clock {
-                font-size: 4.5rem;
+                font-size: 5rem;
                 min-width: 300px;
                 padding: 1rem;
             }
             
             .timer-display {
-                font-size: 2.5rem;
+                font-size: 3rem;
                 min-width: 250px;
+                padding: 1rem;
             }
         }
         
         /* 全屏模式下的样式 */
         body:fullscreen .clock {
-            font-size: 15rem;
+            font-size: 20rem;
         }
         
         body:fullscreen .timer-display {
-            font-size: 8rem;
+            font-size: 12rem;
         }
     </style>
 </head>
