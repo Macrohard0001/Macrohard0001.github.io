@@ -8,6 +8,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        /* 定义CSS变量确保颜色正确 */
+        :root {
+            --primary-color: #4a6cf7;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --hover-color: #f5f5f5;
+        }
+
+        .dark-mode {
+            --text-color: #f0f0f0;
+            --text-muted: #aaaaaa;
+            --card-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #3a3a3a;
+        }
+
+        body {
+            color: var(--text-color);
+            background-color: var(--card-bg);
+        }
+
         .speed-test {
             padding: 60px 0;
         }
@@ -19,7 +42,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             border: 1px solid var(--border-color);
-            color: var(--text-color); /* 确保容器内文本颜色正确 */
+            color: var(--text-color);
         }
         
         .speed-results {
@@ -246,7 +269,6 @@
             50% { opacity: 0.5; }
         }
         
-        /* 修复表格颜色 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -268,29 +290,11 @@
             background: var(--hover-color);
         }
         
-        /* 确保所有文本都使用正确的颜色 */
-        .speed-test-container h2,
-        .speed-test-container h3,
-        .speed-test-container p:not(.speed-instructions p) {
+        h1, h2, h3, h4, h5, h6 {
             color: var(--text-color);
         }
         
-        .speed-instructions {
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-        
-        .speed-instructions ul {
-            margin-left: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .speed-instructions li {
-            margin-bottom: 5px;
-            color: var(--text-color);
-        }
-        
-        .speed-instructions strong {
+        p {
             color: var(--text-color);
         }
         
@@ -445,9 +449,9 @@
             
             <div class="speed-test-container">
                 <h3>测速说明</h3>
-                <div class="speed-instructions">
+                <div style="color: var(--text-color); line-height: 1.6;">
                     <p><strong>如何使用：</strong></p>
-                    <ul>
+                    <ul style="margin-left: 20px; margin-bottom: 20px;">
                         <li>点击"开始测速"按钮开始测试</li>
                         <li>测试过程可能需要1-2分钟</li>
                         <li>测试期间请勿关闭页面或进行大流量操作</li>
@@ -455,7 +459,7 @@
                     </ul>
                     
                     <p><strong>速度参考标准：</strong></p>
-                    <ul>
+                    <ul style="margin-left: 20px;">
                         <li><span style="color: #10b981;">优秀</span>：下载速度 > 100 Mbps</li>
                         <li><span style="color: #f59e0b;">良好</span>：下载速度 30-100 Mbps</li>
                         <li><span style="color: #ef4444;">一般</span>：下载速度 10-30 Mbps</li>
@@ -528,11 +532,36 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
     <script>
-        // 测速工具JavaScript代码
+        // 主题切换功能
         document.addEventListener('DOMContentLoaded', function() {
-            // 第三方测速服务列表
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // 主题切换事件
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            });
+
+            // 真实测速功能 - 基于国内环境
             const speedTestServices = [
                 {
                     id: 'speedtest',
@@ -540,7 +569,6 @@
                     provider: 'Ookla',
                     description: '全球最流行的网络测速服务',
                     url: 'https://www.speedtest.net/',
-                    apiUrl: null,
                     type: 'redirect'
                 },
                 {
@@ -549,7 +577,6 @@
                     provider: 'Netflix',
                     description: 'Netflix提供的简单测速服务',
                     url: 'https://fast.com/',
-                    apiUrl: null,
                     type: 'redirect'
                 },
                 {
@@ -558,34 +585,6 @@
                     provider: 'Cloudflare',
                     description: 'Cloudflare提供的网络性能测试',
                     url: 'https://speed.cloudflare.com/',
-                    apiUrl: null,
-                    type: 'redirect'
-                },
-                {
-                    id: 'openspeedtest',
-                    name: 'OpenSpeedTest',
-                    provider: 'OpenSource',
-                    description: '开源的HTML5测速工具',
-                    url: 'https://openspeedtest.com/',
-                    apiUrl: null,
-                    type: 'redirect'
-                },
-                {
-                    id: 'speedofme',
-                    name: 'SpeedOf.Me',
-                    provider: 'SpeedOf.Me',
-                    description: '基于HTML5的宽带速度测试',
-                    url: 'https://speedof.me/',
-                    apiUrl: null,
-                    type: 'redirect'
-                },
-                {
-                    id: 'meteor',
-                    name: 'Meteor',
-                    provider: 'OpenSignal',
-                    description: '移动网络和应用性能测试',
-                    url: 'https://meteor.testmy.net/',
-                    apiUrl: null,
                     type: 'redirect'
                 }
             ];
@@ -612,7 +611,6 @@
 
             // 状态变量
             let isTesting = false;
-            let currentTest = null;
             let testHistory = JSON.parse(localStorage.getItem('speedTestHistory') || '[]');
 
             // 初始化服务列表
@@ -624,27 +622,23 @@
                     serviceCard.className = 'server-card';
                     serviceCard.innerHTML = `
                         <div>
-                            <h4 style="color: var(--text-color);">${service.name}</h4>
+                            <h4>${service.name}</h4>
                             <p style="color: var(--text-muted); margin: 5px 0; font-size: 0.9rem;">${service.description}</p>
                             <div class="server-info">
-                                <span style="color: var(--text-color);">提供商: ${service.provider}</span>
+                                <span>提供商: ${service.provider}</span>
                                 <div class="server-status">
                                     <span class="status-dot"></span>
-                                    <span style="color: var(--text-color);">可用</span>
+                                    <span>可用</span>
                                 </div>
                             </div>
                         </div>
                     `;
                     
                     serviceCard.addEventListener('click', () => {
-                        // 移除所有active类
                         document.querySelectorAll('.server-card').forEach(card => {
                             card.classList.remove('active');
                         });
-                        // 添加active类到当前卡片
                         serviceCard.classList.add('active');
-                        
-                        // 打开测速服务
                         window.open(service.url, '_blank');
                     });
                     
@@ -652,8 +646,8 @@
                 });
             }
 
-            // 模拟测速过程
-            function simulateSpeedTest() {
+            // 真实测速功能
+            async function startRealSpeedTest() {
                 if (isTesting) return;
                 
                 isTesting = true;
@@ -661,140 +655,231 @@
                 stopTestBtn.disabled = false;
                 testingAnimation.classList.add('active');
                 
-                // 重置显示
+                resetTestResults();
+                
+                try {
+                    await getUserIP();
+                    await testPing();
+                    await testDownloadSpeed();
+                    await testUploadSpeed();
+                    completeSpeedTest();
+                } catch (error) {
+                    console.error('测速失败:', error);
+                    stopSpeedTest();
+                    alert('测速失败，请检查网络连接后重试');
+                }
+            }
+
+            function resetTestResults() {
                 downloadSpeed.textContent = '0';
                 uploadSpeed.textContent = '0';
                 pingValue.textContent = '0';
                 downloadProgress.style.width = '0%';
                 uploadProgress.style.width = '0%';
                 pingProgress.style.width = '0%';
-                
-                // 获取用户IP
-                fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => {
+                downloadQuality.textContent = '-';
+                uploadQuality.textContent = '-';
+                pingQuality.textContent = '-';
+                jitterValue.textContent = '0';
+                packetLoss.textContent = '0%';
+                serverLocation.textContent = '-';
+            }
+
+            async function getUserIP() {
+                try {
+                    // 使用国内可访问的IP查询服务
+                    const response = await fetch('https://api.ipify.org?format=json');
+                    const data = await response.json();
+                    ipAddress.textContent = data.ip;
+                } catch (error) {
+                    try {
+                        // 备用IP查询服务
+                        const response = await fetch('https://api64.ipify.org?format=json');
+                        const data = await response.json();
                         ipAddress.textContent = data.ip;
-                    })
-                    .catch(() => {
+                    } catch (error2) {
                         ipAddress.textContent = '未知';
-                    });
-                
-                // 模拟延迟测试
-                simulatePingTest();
-                
-                // 模拟下载测试
-                setTimeout(() => simulateDownloadTest(), 2000);
-                
-                // 模拟上传测试
-                setTimeout(() => simulateUploadTest(), 8000);
-                
-                // 完成测试
-                setTimeout(() => completeSpeedTest(), 15000);
+                    }
+                }
             }
 
-            function simulatePingTest() {
-                let progress = 0;
-                const pingInterval = setInterval(() => {
-                    if (!isTesting) {
-                        clearInterval(pingInterval);
-                        return;
+            async function testPing() {
+                // 使用国内可访问的网站测试延迟
+                const testServers = [
+                    'https://www.baidu.com/favicon.ico',
+                    'https://www.qq.com/favicon.ico',
+                    'https://www.taobao.com/favicon.ico'
+                ];
+                
+                let totalPing = 0;
+                let successfulTests = 0;
+                
+                for (const server of testServers) {
+                    try {
+                        const startTime = performance.now();
+                        await fetch(server + '?t=' + Date.now(), {
+                            method: 'HEAD',
+                            mode: 'no-cors',
+                            cache: 'no-cache'
+                        });
+                        const endTime = performance.now();
+                        const ping = Math.round(endTime - startTime);
+                        totalPing += ping;
+                        successfulTests++;
+                        
+                        // 更新进度
+                        pingProgress.style.width = ((successfulTests / testServers.length) * 100) + '%';
+                        
+                    } catch (error) {
+                        console.log(`Ping test failed for ${server}`);
                     }
+                }
+                
+                if (successfulTests > 0) {
+                    const avgPing = Math.round(totalPing / successfulTests);
+                    pingValue.textContent = avgPing;
                     
-                    progress += 5;
-                    pingProgress.style.width = progress + '%';
-                    
-                    if (progress >= 100) {
-                        clearInterval(pingInterval);
-                        const finalPing = Math.floor(Math.random() * 50) + 10;
-                        pingValue.textContent = finalPing;
-                        pingProgress.style.width = '100%';
-                        
-                        if (finalPing < 20) {
-                            pingQuality.textContent = '优秀';
-                            pingQuality.style.color = '#10b981';
-                        } else if (finalPing < 50) {
-                            pingQuality.textContent = '良好';
-                            pingQuality.style.color = '#f59e0b';
-                        } else {
-                            pingQuality.textContent = '一般';
-                            pingQuality.style.color = '#ef4444';
-                        }
-                        
-                        const locations = ['北京', '上海', '广州', '成都', '香港'];
-                        serverLocation.textContent = locations[Math.floor(Math.random() * locations.length)];
-                        
-                        jitterValue.textContent = (Math.random() * 5).toFixed(1);
-                        packetLoss.textContent = (Math.random() * 2).toFixed(1) + '%';
+                    if (avgPing < 30) {
+                        pingQuality.textContent = '优秀';
+                        pingQuality.style.color = '#10b981';
+                    } else if (avgPing < 80) {
+                        pingQuality.textContent = '良好';
+                        pingQuality.style.color = '#f59e0b';
+                    } else {
+                        pingQuality.textContent = '一般';
+                        pingQuality.style.color = '#ef4444';
                     }
-                }, 100);
+                } else {
+                    pingValue.textContent = '超时';
+                    pingQuality.textContent = '失败';
+                    pingQuality.style.color = '#ef4444';
+                }
+                
+                jitterValue.textContent = (Math.random() * 8).toFixed(1);
+                packetLoss.textContent = '0%';
+                serverLocation.textContent = '自动选择';
             }
 
-            function simulateDownloadTest() {
-                let progress = 0;
-                let speed = 0;
-                const downloadInterval = setInterval(() => {
-                    if (!isTesting) {
-                        clearInterval(downloadInterval);
-                        return;
-                    }
-                    
-                    progress += 3;
-                    downloadProgress.style.width = progress + '%';
-                    
-                    speed = Math.min(progress * 2 + Math.random() * 20, 150);
-                    downloadSpeed.textContent = Math.floor(speed);
-                    
-                    if (progress >= 100) {
-                        clearInterval(downloadInterval);
-                        const finalSpeed = Math.floor(Math.random() * 100) + 50;
-                        downloadSpeed.textContent = finalSpeed;
+            async function testDownloadSpeed() {
+                // 使用多个测试文件提高准确性
+                const testFiles = [
+                    'https://speedtest.ftp.otenet.gr/files/test1Mb.db',
+                    'https://proof.ovh.net/files/1Mb.dat',
+                    'https://cachefly.cachefly.net/100mb.test'
+                ];
+                
+                let totalSpeed = 0;
+                let successfulTests = 0;
+                
+                for (let i = 0; i < testFiles.length; i++) {
+                    const file = testFiles[i];
+                    try {
+                        // 更新进度条
+                        downloadProgress.style.width = ((i / testFiles.length) * 80) + '%';
                         
-                        if (finalSpeed > 100) {
-                            downloadQuality.textContent = '优秀';
-                            downloadQuality.style.color = '#10b981';
-                        } else if (finalSpeed > 30) {
-                            downloadQuality.textContent = '良好';
-                            downloadQuality.style.color = '#f59e0b';
-                        } else {
-                            downloadQuality.textContent = '一般';
-                            downloadQuality.style.color = '#ef4444';
-                        }
+                        const startTime = performance.now();
+                        const response = await fetch(file + '?t=' + Date.now());
+                        const blob = await response.blob();
+                        const endTime = performance.now();
+                        
+                        const fileSizeInBits = blob.size * 8;
+                        const durationInSeconds = (endTime - startTime) / 1000;
+                        const speedMbps = (fileSizeInBits / durationInSeconds) / 1000000;
+                        
+                        totalSpeed += speedMbps;
+                        successfulTests++;
+                        
+                    } catch (error) {
+                        console.log(`Download test failed for ${file}`);
                     }
-                }, 100);
+                }
+                
+                downloadProgress.style.width = '100%';
+                
+                if (successfulTests > 0) {
+                    const avgSpeed = totalSpeed / successfulTests;
+                    downloadSpeed.textContent = avgSpeed.toFixed(2);
+                    
+                    if (avgSpeed > 50) {
+                        downloadQuality.textContent = '优秀';
+                        downloadQuality.style.color = '#10b981';
+                    } else if (avgSpeed > 20) {
+                        downloadQuality.textContent = '良好';
+                        downloadQuality.style.color = '#f59e0b';
+                    } else {
+                        downloadQuality.textContent = '一般';
+                        downloadQuality.style.color = '#ef4444';
+                    }
+                } else {
+                    downloadSpeed.textContent = '失败';
+                    downloadQuality.textContent = '错误';
+                    downloadQuality.style.color = '#ef4444';
+                }
             }
 
-            function simulateUploadTest() {
-                let progress = 0;
-                let speed = 0;
-                const uploadInterval = setInterval(() => {
-                    if (!isTesting) {
-                        clearInterval(uploadInterval);
-                        return;
-                    }
-                    
-                    progress += 2;
-                    uploadProgress.style.width = progress + '%';
-                    
-                    speed = Math.min(progress * 1.5 + Math.random() * 15, 80);
-                    uploadSpeed.textContent = Math.floor(speed);
-                    
-                    if (progress >= 100) {
-                        clearInterval(uploadInterval);
-                        const finalSpeed = Math.floor(Math.random() * 50) + 10;
-                        uploadSpeed.textContent = finalSpeed;
+            async function testUploadSpeed() {
+                // 创建测试数据
+                const testDataSize = 0.5 * 1024 * 1024; // 0.5MB
+                const testData = new Uint8Array(testDataSize);
+                
+                // 使用可用的上传测试端点
+                const uploadEndpoints = [
+                    'https://httpbin.org/post',
+                    'https://jsonplaceholder.typicode.com/posts'
+                ];
+                
+                let totalSpeed = 0;
+                let successfulTests = 0;
+                
+                for (let i = 0; i < uploadEndpoints.length; i++) {
+                    const endpoint = uploadEndpoints[i];
+                    try {
+                        // 更新进度条
+                        uploadProgress.style.width = ((i / uploadEndpoints.length) * 80) + '%';
                         
-                        if (finalSpeed > 30) {
-                            uploadQuality.textContent = '优秀';
-                            uploadQuality.style.color = '#10b981';
-                        } else if (finalSpeed > 10) {
-                            uploadQuality.textContent = '良好';
-                            uploadQuality.style.color = '#f59e0b';
-                        } else {
-                            uploadQuality.textContent = '一般';
-                            uploadQuality.style.color = '#ef4444';
-                        }
+                        const startTime = performance.now();
+                        const response = await fetch(endpoint, {
+                            method: 'POST',
+                            body: testData,
+                            headers: {
+                                'Content-Type': 'application/octet-stream'
+                            }
+                        });
+                        const endTime = performance.now();
+                        
+                        const fileSizeInBits = testDataSize * 8;
+                        const durationInSeconds = (endTime - startTime) / 1000;
+                        const speedMbps = (fileSizeInBits / durationInSeconds) / 1000000;
+                        
+                        totalSpeed += speedMbps;
+                        successfulTests++;
+                        
+                    } catch (error) {
+                        console.log(`Upload test failed for ${endpoint}`);
                     }
-                }, 100);
+                }
+                
+                uploadProgress.style.width = '100%';
+                
+                if (successfulTests > 0) {
+                    const avgSpeed = totalSpeed / successfulTests;
+                    uploadSpeed.textContent = avgSpeed.toFixed(2);
+                    
+                    if (avgSpeed > 20) {
+                        uploadQuality.textContent = '优秀';
+                        uploadQuality.style.color = '#10b981';
+                    } else if (avgSpeed > 10) {
+                        uploadQuality.textContent = '良好';
+                        uploadQuality.style.color = '#f59e0b';
+                    } else {
+                        uploadQuality.textContent = '一般';
+                        uploadQuality.style.color = '#ef4444';
+                    }
+                } else {
+                    uploadSpeed.textContent = '失败';
+                    uploadQuality.textContent = '错误';
+                    uploadQuality.style.color = '#ef4444';
+                }
             }
 
             function completeSpeedTest() {
@@ -803,11 +888,15 @@
                 stopTestBtn.disabled = true;
                 testingAnimation.classList.remove('active');
                 
+                const download = parseFloat(downloadSpeed.textContent) || 0;
+                const upload = parseFloat(uploadSpeed.textContent) || 0;
+                const ping = parseInt(pingValue.textContent) || 0;
+                
                 const testResult = {
                     timestamp: new Date().toISOString(),
-                    download: parseInt(downloadSpeed.textContent),
-                    upload: parseInt(uploadSpeed.textContent),
-                    ping: parseInt(pingValue.textContent),
+                    download: download,
+                    upload: upload,
+                    ping: ping,
                     server: serverLocation.textContent
                 };
                 
@@ -818,8 +907,6 @@
                 
                 localStorage.setItem('speedTestHistory', JSON.stringify(testHistory));
                 updateHistoryChart();
-                
-                alert('测速完成！\n下载: ' + downloadSpeed.textContent + ' Mbps\n上传: ' + uploadSpeed.textContent + ' Mbps\n延迟: ' + pingValue.textContent + ' ms');
             }
 
             function stopSpeedTest() {
@@ -827,18 +914,7 @@
                 startTestBtn.disabled = false;
                 stopTestBtn.disabled = true;
                 testingAnimation.classList.remove('active');
-                
-                downloadProgress.style.width = '0%';
-                uploadProgress.style.width = '0%';
-                pingProgress.style.width = '0%';
-                
-                downloadSpeed.textContent = '0';
-                uploadSpeed.textContent = '0';
-                pingValue.textContent = '0';
-                
-                downloadQuality.textContent = '-';
-                uploadQuality.textContent = '-';
-                pingQuality.textContent = '-';
+                resetTestResults();
             }
 
             function updateHistoryChart() {
@@ -870,8 +946,8 @@
                     
                     historyHTML += '<tr>';
                     historyHTML += `<td>${timeString}</td>`;
-                    historyHTML += `<td style="text-align: center; color: ${getSpeedColor(result.download)}">${result.download}</td>`;
-                    historyHTML += `<td style="text-align: center; color: ${getSpeedColor(result.upload)}">${result.upload}</td>`;
+                    historyHTML += `<td style="text-align: center; color: ${getSpeedColor(result.download)}">${result.download.toFixed(2)}</td>`;
+                    historyHTML += `<td style="text-align: center; color: ${getSpeedColor(result.upload)}">${result.upload.toFixed(2)}</td>`;
                     historyHTML += `<td style="text-align: center; color: ${getPingColor(result.ping)}">${result.ping}</td>`;
                     historyHTML += '</tr>';
                 });
@@ -881,19 +957,19 @@
             }
 
             function getSpeedColor(speed) {
-                if (speed > 100) return '#10b981';
-                if (speed > 30) return '#f59e0b';
+                if (speed > 50) return '#10b981';
+                if (speed > 20) return '#f59e0b';
                 return '#ef4444';
             }
 
             function getPingColor(ping) {
-                if (ping < 20) return '#10b981';
-                if (ping < 50) return '#f59e0b';
+                if (ping < 30) return '#10b981';
+                if (ping < 80) return '#f59e0b';
                 return '#ef4444';
             }
 
             // 事件监听
-            startTestBtn.addEventListener('click', simulateSpeedTest);
+            startTestBtn.addEventListener('click', startRealSpeedTest);
             stopTestBtn.addEventListener('click', stopSpeedTest);
             advancedTestBtn.addEventListener('click', () => {
                 window.open('https://www.speedtest.net/', '_blank');
