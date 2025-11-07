@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>美化时钟 - Macrohard Studio</title>
+    <title>考试时钟 - Macrohard Studio</title>
     <link rel="icon" href="https://github.com/Macrohard0001-m01/Macrohard0001-m01.github.io/blob/main/images/macrohard_icon_day.png?raw=true" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -26,7 +26,7 @@
             --card-bg: #ffffff;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --border-radius: 12px;
-            --transition: all 0.3s ease;
+            --transition: all 0.3 ease;
         }
         
         .dark-mode {
@@ -97,7 +97,7 @@
             text-decoration: none;
             padding: 5px 10px;
             border-radius: 4px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3;
         }
         
         .nav-links a:hover, .nav-links a.active {
@@ -383,7 +383,7 @@
             min-width: 300px;
         }
         
-        /* 美化进度条 */
+        /* 智能进度条 */
         .progress-container {
             margin: 2rem 0;
         }
@@ -407,17 +407,11 @@
         
         .progress {
             height: 100%;
-            background: linear-gradient(90deg, 
-                var(--success-color), 
-                #27ae60, 
-                #2ecc71, 
-                #3498db, 
-                var(--secondary-color));
             border-radius: 10px;
             width: 0%;
-            transition: width 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+            transition: width 1 cubic-bezier(0.22, 0.61, 0.36, 1);
             position: relative;
-            box-shadow: 0 2px 4px rgba(46, 204, 113, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .progress::after {
@@ -431,7 +425,7 @@
                 transparent, 
                 rgba(255, 255, 255, 0.4), 
                 transparent);
-            animation: shimmer 2s infinite;
+            animation: shimmer 2 infinite;
         }
         
         @keyframes shimmer {
@@ -450,6 +444,26 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
+        .color-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+        }
+        
+        .color-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .color-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
         .warning {
             color: var(--warning-color);
             font-weight: bold;
@@ -458,7 +472,7 @@
             background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(231, 76, 60, 0.1));
             border-radius: var(--border-radius);
             display: none;
-            animation: pulse 2s infinite;
+            animation: pulse 2 infinite;
             border-left: 4px solid var(--warning-color);
         }
         
@@ -481,7 +495,7 @@
             color: var(--accent-color);
             background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1));
             border-left: 4px solid var(--accent-color);
-            animation: critical-pulse 1s infinite;
+            animation: critical-pulse 1 infinite;
         }
         
         @keyframes critical-pulse {
@@ -612,7 +626,7 @@
         .footer-column ul li a {
             color: #ddd;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: color 0.3;
         }
         
         .footer-column ul li a:hover {
@@ -697,8 +711,8 @@
                     <li><a href="index.html">首页</a></li>
                     <li><a href="software.html">软件</a></li>
                     <li><a href="music.html">音乐</a></li>
-                    <li><a href="reserved1.html">预留1</a></li>
-                    <li><a href="reserved2.html">预留2</a></li>
+                    <li><a href="speedtest.html">小工具</a></li>
+                    <li><a href="exam-clock.html">考试时钟</a></li>
                     <li><a href="reserved3.html">预留3</a></li>
                     <li><a href="reserved4.html">预留4</a></li>
                     <li><a href="reserved5.html">预留5</a></li>
@@ -721,8 +735,8 @@
     <div class="main-content">
         <div class="container">
             <div class="section-title">
-                <h2>在线考试时钟</h2>
-                <p>美观的时间显示与进度条，专为高中考试设计</p>
+                <h2>智能考试时钟</h2>
+                <p>动态颜色进度条，直观显示考试进度</p>
             </div>
             
             <div class="exam-clock-container">
@@ -806,6 +820,20 @@
                                 <div class="progress-percent" id="progressPercentText">0%</div>
                             </div>
                         </div>
+                        <div class="color-indicator">
+                            <div class="color-item">
+                                <div class="color-dot" style="background-color: #2ecc71;"></div>
+                                <span>充足</span>
+                            </div>
+                            <div class="color-item">
+                                <div class="color-dot" style="background-color: #f39c12;"></div>
+                                <span>适中</span>
+                            </div>
+                            <div class="color-item">
+                                <div class="color-dot" style="background-color: #e74c3c;"></div>
+                                <span>紧张</span>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="warning" id="warning">距离考试结束还有15分钟，请合理安排时间！</div>
@@ -861,7 +889,7 @@
                         <ul>
                             <li><a href="software.html">AORE</a></li>
                             <li><a href="software.html">RCP3</a></li>
-                            <li><a href="#">预留</a></li>
+                            <li><a href="exam-clock.html">智能考试时钟</a></li>
                             <li><a href="">预留</a></li>
                         </ul>
                     </div>
@@ -980,6 +1008,9 @@
             progressPercentElement.textContent = "0%";
             progressPercentTextElement.textContent = "0%";
             warningElement.style.display = "none";
+            
+            // 重置进度条颜色
+            updateProgressColor(100);
         }
         
         // 更新时钟
@@ -1008,6 +1039,9 @@
             const endTime = new Date(currentExam.startTime.getTime() + currentExam.duration);
             let remainingTime = endTime.getTime() - now.getTime();
             
+            // 计算剩余时间百分比
+            const remainingPercent = (remainingTime / currentExam.duration) * 100;
+            
             // 考试状态
             if (remainingTime < 0) {
                 // 考试已结束
@@ -1016,10 +1050,10 @@
                 examStatusElement.textContent = "已结束";
                 timerElement.style.color = "#e74c3c";
                 progressElement.style.width = "100%";
-                progressElement.style.background = "#e74c3c";
                 progressPercentElement.textContent = "100%";
                 progressPercentTextElement.textContent = "100%";
                 warningElement.style.display = "none";
+                updateProgressColor(0);
                 return;
             } else if (now < currentExam.startTime) {
                 // 考试未开始
@@ -1030,11 +1064,11 @@
                 progressElement.style.width = "0%";
                 progressPercentElement.textContent = "0%";
                 progressPercentTextElement.textContent = "0%";
+                updateProgressColor(100);
             } else {
                 // 考试进行中
                 timerStatusElement.textContent = "进行中";
                 examStatusElement.textContent = "进行中";
-                timerElement.style.color = "#2ecc71";
                 
                 // 更新进度条
                 const elapsed = now.getTime() - currentExam.startTime.getTime();
@@ -1043,6 +1077,18 @@
                 progressElement.style.width = `${progressPercent}%`;
                 progressPercentElement.textContent = `${roundedPercent}%`;
                 progressPercentTextElement.textContent = `${roundedPercent}%`;
+                
+                // 更新进度条颜色
+                updateProgressColor(remainingPercent);
+                
+                // 更新剩余时间颜色
+                if (remainingPercent > 50) {
+                    timerElement.style.color = "#2ecc71";
+                } else if (remainingPercent > 20) {
+                    timerElement.style.color = "#f39c12";
+                } else {
+                    timerElement.style.color = "#e74c3c";
+                }
                 
                 // 检查是否需要显示警告
                 if (remainingTime <= currentExam.warningThreshold) {
@@ -1068,6 +1114,24 @@
             
             timerElement.textContent = 
                 `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // 更新进度条颜色
+        function updateProgressColor(remainingPercent) {
+            let gradient;
+            
+            if (remainingPercent > 50) {
+                // 绿色 - 时间充足
+                gradient = "linear-gradient(90deg, #2ecc71, #27ae60, #2ecc71)";
+            } else if (remainingPercent > 20) {
+                // 黄色 - 时间适中
+                gradient = "linear-gradient(90deg, #f39c12, #e67e22, #f39c12)";
+            } else {
+                // 红色 - 时间紧张
+                gradient = "linear-gradient(90deg, #e74c3c, #c0392b, #e74c3c)";
+            }
+            
+            progressElement.style.background = gradient;
         }
         
         // 格式化时间
