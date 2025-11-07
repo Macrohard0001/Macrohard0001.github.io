@@ -19,6 +19,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             border: 1px solid var(--border-color);
+            color: var(--text-color);
         }
         
         .speed-results {
@@ -63,6 +64,7 @@
         
         .speed-label {
             color: white;
+            font-weight: 500;
         }
         
         .speed-progress {
@@ -200,6 +202,7 @@
             font-size: 0.9rem;
             opacity: 0.9;
             color: white;
+            font-weight: 500;
         }
         
         .testing-animation {
@@ -263,6 +266,21 @@
         
         tr:hover {
             background: var(--hover-color);
+        }
+        
+        /* 测速说明区域的文本颜色 */
+        .speed-instructions {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .speed-instructions ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .speed-instructions li {
+            margin-bottom: 5px;
         }
         
         @media (max-width: 768px) {
@@ -416,9 +434,9 @@
             
             <div class="speed-test-container">
                 <h3>测速说明</h3>
-                <div style="line-height: 1.6;">
+                <div class="speed-instructions">
                     <p><strong>如何使用：</strong></p>
-                    <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <ul>
                         <li>点击"开始测速"按钮开始测试</li>
                         <li>测试过程可能需要1-2分钟</li>
                         <li>测试期间请勿关闭页面或进行大流量操作</li>
@@ -426,7 +444,7 @@
                     </ul>
                     
                     <p><strong>速度参考标准：</strong></p>
-                    <ul style="margin-left: 20px;">
+                    <ul>
                         <li><span style="color: #10b981;">优秀</span>：下载速度 > 100 Mbps</li>
                         <li><span style="color: #f59e0b;">良好</span>：下载速度 30-100 Mbps</li>
                         <li><span style="color: #ef4444;">一般</span>：下载速度 10-30 Mbps</li>
