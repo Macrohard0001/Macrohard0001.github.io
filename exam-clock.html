@@ -293,8 +293,9 @@
             color: var(--primary-color);
         }
         
+        /* 加大时钟字体 - 第一处 */
         .clock {
-            font-size: 8rem;
+            font-size: 10rem;
             font-weight: 900;
             color: var(--accent-color);
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
@@ -305,7 +306,7 @@
             border-radius: 20px;
             border: 3px solid rgba(231, 76, 60, 0.3);
             display: inline-block;
-            min-width: 500px;
+            min-width: 600px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
             box-shadow: 
                 inset 0 2px 4px rgba(255, 255, 255, 0.2),
@@ -369,8 +370,9 @@
             background: rgba(52, 152, 219, 0.2);
         }
         
+        /* 加大计时器字体 - 第二处 */
         .timer-display {
-            font-size: 3.5rem;
+            font-size: 5rem;
             font-weight: bold;
             text-align: center;
             margin: 1.5rem 0;
@@ -380,7 +382,7 @@
             padding: 1rem;
             border-radius: 15px;
             display: inline-block;
-            min-width: 300px;
+            min-width: 400px;
         }
         
         /* 智能进度条 */
@@ -651,14 +653,15 @@
                 display: block;
             }
             
+            /* 响应式调整时钟字体大小 */
             .clock {
-                font-size: 5rem;
-                min-width: 300px;
+                font-size: 6rem;
+                min-width: 400px;
             }
             
             .timer-display {
-                font-size: 2.5rem;
-                min-width: 250px;
+                font-size: 3rem;
+                min-width: 300px;
             }
             
             .exam-config {
@@ -676,24 +679,24 @@
         
         @media (max-width: 480px) {
             .clock {
-                font-size: 4rem;
-                min-width: 250px;
+                font-size: 4.5rem;
+                min-width: 300px;
                 padding: 1rem;
             }
             
             .timer-display {
-                font-size: 2rem;
-                min-width: 200px;
+                font-size: 2.5rem;
+                min-width: 250px;
             }
         }
         
         /* 全屏模式下的样式 */
         body:fullscreen .clock {
-            font-size: 12rem;
+            font-size: 15rem;
         }
         
         body:fullscreen .timer-display {
-            font-size: 5rem;
+            font-size: 8rem;
         }
     </style>
 </head>
@@ -712,7 +715,7 @@
                     <li><a href="software.html">软件</a></li>
                     <li><a href="music.html">音乐</a></li>
                     <li><a href="speedtest.html">测速工具</a></li>
-                    <li><a href="exam-clock.html">考试时钟</a></li>
+                    <li><a href="exam-clock.html" class="active">考试时钟</a></li>
                     <li><a href="reserved3.html">预留3</a></li>
                     <li><a href="reserved4.html">预留4</a></li>
                     <li><a href="reserved5.html">预留5</a></li>
@@ -1008,224 +1011,146 @@
             progressPercentElement.textContent = "0%";
             progressPercentTextElement.textContent = "0%";
             warningElement.style.display = "none";
+        }
+        
+        // 格式化时间
+        function formatTime(date) {
+            return date.toTimeString().split(' ')[0];
+        }
+        
+        // 格式化时长
+        function formatDuration(durationMs) {
+            const hours = Math.floor(durationMs / (60 * 60 * 1000));
+            const minutes = Math.floor((durationMs % (60 * 60 * 1000)) / (60 * 1000));
             
-            // 重置进度条颜色
-            updateProgressColor(100);
+            if (hours > 0) {
+                return `${hours}小时${minutes}分钟`;
+            } else {
+                return `${minutes}分钟`;
+            }
         }
         
         // 更新时钟
         function updateClock() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('zh-CN');
-            const dateString = now.toLocaleDateString('zh-CN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                weekday: 'long'
-            });
             
-            clockElement.textContent = timeString;
-            dateElement.textContent = dateString;
+            // 更新日期和星期
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            dateElement.textContent = now.toLocaleDateString('zh-CN', options);
             
-            // 更新剩余时间
-            updateRemainingTime(now);
-        }
-        
-        // 更新剩余时间
-        function updateRemainingTime(now) {
-            if (!currentExam.startTime) return;
+            // 更新当前时间
+            clockElement.textContent = now.toTimeString().split(' ')[0];
             
-            // 计算剩余时间
-            const endTime = new Date(currentExam.startTime.getTime() + currentExam.duration);
-            let remainingTime = endTime.getTime() - now.getTime();
-            
-            // 计算剩余时间百分比
-            const remainingPercent = (remainingTime / currentExam.duration) * 100;
-            
-            // 考试状态
-            if (remainingTime < 0) {
-                // 考试已结束
-                timerElement.textContent = "00:00:00";
-                timerStatusElement.textContent = "已结束";
-                examStatusElement.textContent = "已结束";
-                timerElement.style.color = "#e74c3c";
-                progressElement.style.width = "100%";
-                progressPercentElement.textContent = "100%";
-                progressPercentTextElement.textContent = "100%";
-                warningElement.style.display = "none";
-                updateProgressColor(0);
-                return;
-            } else if (now < currentExam.startTime) {
-                // 考试未开始
-                remainingTime = currentExam.startTime.getTime() - now.getTime();
-                timerStatusElement.textContent = "未开始";
-                examStatusElement.textContent = "未开始";
-                timerElement.style.color = "#f39c12";
-                progressElement.style.width = "0%";
-                progressPercentElement.textContent = "0%";
-                progressPercentTextElement.textContent = "0%";
-                updateProgressColor(100);
-            } else {
-                // 考试进行中
-                timerStatusElement.textContent = "进行中";
-                examStatusElement.textContent = "进行中";
+            // 更新考试状态和计时器
+            if (currentExam.startTime) {
+                const timeDiff = now.getTime() - currentExam.startTime.getTime();
                 
-                // 更新进度条
-                const elapsed = now.getTime() - currentExam.startTime.getTime();
-                const progressPercent = (elapsed / currentExam.duration) * 100;
-                const roundedPercent = Math.min(Math.round(progressPercent), 100);
-                progressElement.style.width = `${progressPercent}%`;
-                progressPercentElement.textContent = `${roundedPercent}%`;
-                progressPercentTextElement.textContent = `${roundedPercent}%`;
-                
-                // 更新进度条颜色
-                updateProgressColor(remainingPercent);
-                
-                // 更新剩余时间颜色
-                if (remainingPercent > 50) {
-                    timerElement.style.color = "#2ecc71";
-                } else if (remainingPercent > 20) {
-                    timerElement.style.color = "#f39c12";
-                } else {
-                    timerElement.style.color = "#e74c3c";
-                }
-                
-                // 检查是否需要显示警告
-                if (remainingTime <= currentExam.warningThreshold) {
-                    warningElement.textContent = currentExam.warningMessage;
-                    warningElement.style.display = "block";
+                if (timeDiff < 0) {
+                    // 考试未开始
+                    timerStatusElement.textContent = "未开始";
+                    examStatusElement.textContent = "未开始";
+                    timerElement.textContent = "--:--:--";
+                    progressElement.style.width = "0%";
+                    progressPercentElement.textContent = "0%";
+                    progressPercentTextElement.textContent = "0%";
+                    warningElement.style.display = "none";
+                } else if (timeDiff >= 0 && timeDiff <= currentExam.duration) {
+                    // 考试进行中
+                    timerStatusElement.textContent = "进行中";
+                    examStatusElement.textContent = "进行中";
                     
-                    // 最后5分钟改为红色警告
-                    if (remainingTime <= 5 * 60 * 1000) {
-                        warningElement.classList.add("critical");
-                        warningElement.textContent = "仅剩5分钟！请立即检查答题卡！";
+                    // 计算剩余时间
+                    const remainingTime = currentExam.duration - timeDiff;
+                    timerElement.textContent = formatTime(new Date(remainingTime));
+                    
+                    // 更新进度条
+                    const progressPercent = (timeDiff / currentExam.duration) * 100;
+                    progressElement.style.width = `${progressPercent}%`;
+                    progressPercentElement.textContent = `${Math.round(progressPercent)}%`;
+                    progressPercentTextElement.textContent = `${Math.round(progressPercent)}%`;
+                    
+                    // 根据进度更新进度条颜色
+                    if (progressPercent < 50) {
+                        progressElement.style.background = "linear-gradient(90deg, #2ecc71, #27ae60)";
+                    } else if (progressPercent < 80) {
+                        progressElement.style.background = "linear-gradient(90deg, #f39c12, #e67e22)";
                     } else {
-                        warningElement.classList.remove("critical");
+                        progressElement.style.background = "linear-gradient(90deg, #e74c3c, #c0392b)";
+                    }
+                    
+                    // 检查是否需要显示警告
+                    if (remainingTime <= currentExam.warningThreshold && remainingTime > 0) {
+                        warningElement.textContent = currentExam.warningMessage || `距离考试结束还有${Math.ceil(remainingTime / (60 * 1000))}分钟，请合理安排时间！`;
+                        warningElement.style.display = "block";
+                        
+                        if (remainingTime <= 5 * 60 * 1000) {
+                            warningElement.classList.add("critical");
+                        } else {
+                            warningElement.classList.remove("critical");
+                        }
+                    } else {
+                        warningElement.style.display = "none";
                     }
                 } else {
-                    warningElement.style.display = "none";
+                    // 考试已结束
+                    timerStatusElement.textContent = "已结束";
+                    examStatusElement.textContent = "已结束";
+                    timerElement.textContent = "00:00:00";
+                    progressElement.style.width = "100%";
+                    progressPercentElement.textContent = "100%";
+                    progressPercentTextElement.textContent = "100%";
+                    progressElement.style.background = "linear-gradient(90deg, #95a5a6, #7f8c8d)";
+                    warningElement.textContent = "考试已结束，请停止答题！";
+                    warningElement.style.display = "block";
+                    warningElement.classList.add("critical");
                 }
-            }
-            
-            // 更新剩余时间显示
-            const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-            
-            timerElement.textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // 更新进度条颜色
-        function updateProgressColor(remainingPercent) {
-            let gradient;
-            
-            if (remainingPercent > 50) {
-                // 绿色 - 时间充足
-                gradient = "linear-gradient(90deg, #2ecc71, #27ae60, #2ecc71)";
-            } else if (remainingPercent > 20) {
-                // 黄色 - 时间适中
-                gradient = "linear-gradient(90deg, #f39c12, #e67e22, #f39c12)";
-            } else {
-                // 红色 - 时间紧张
-                gradient = "linear-gradient(90deg, #e74c3c, #c0392b, #e74c3c)";
-            }
-            
-            progressElement.style.background = gradient;
-        }
-        
-        // 格式化时间
-        function formatTime(date) {
-            return date.toLocaleTimeString('zh-CN', { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit',
-                hour12: false
-            });
-        }
-        
-        // 格式化时长
-        function formatDuration(milliseconds) {
-            const minutes = Math.floor(milliseconds / (1000 * 60));
-            const hours = Math.floor(minutes / 60);
-            const remainingMinutes = minutes % 60;
-            
-            if (hours > 0 && remainingMinutes > 0) {
-                return `${hours}小时${remainingMinutes}分钟`;
-            } else if (hours > 0) {
-                return `${hours}小时`;
-            } else {
-                return `${remainingMinutes}分钟`;
-            }
-        }
-        
-        // 修复全屏功能
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                // 进入全屏
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
-                }
-            } else {
-                // 退出全屏
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            }
-        }
-        
-        // 更新全屏按钮图标
-        function updateFullscreenButton() {
-            const icon = fullscreenBtn.querySelector('i');
-            if (document.fullscreenElement) {
-                // 退出全屏图标
-                icon.className = 'fas fa-compress';
-            } else {
-                // 进入全屏图标
-                icon.className = 'fas fa-expand';
             }
         }
         
         // 切换主题
-        function toggleTheme() {
+        themeToggle.addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
             const icon = themeToggle.querySelector('i');
             if (document.body.classList.contains('dark-mode')) {
-                icon.className = 'fas fa-sun';
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
             } else {
-                icon.className = 'fas fa-moon';
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
             }
-        }
+        });
         
-        // 事件监听
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-        applyBtn.addEventListener('click', initExam);
-        themeToggle.addEventListener('click', toggleTheme);
+        // 全屏功能
+        fullscreenBtn.addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`全屏请求错误: ${err.message}`);
+                });
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                }
+            }
+        });
+        
+        // 科目选择事件
         subjectSelect.addEventListener('change', function() {
             if (this.value === 'custom') {
                 customSubjectInput.style.display = 'block';
             } else {
                 customSubjectInput.style.display = 'none';
-                initExam();
+                const config = subjectConfig[this.value];
+                examDurationInput.value = config.duration;
             }
         });
         
-        // 监听全屏状态变化
-        document.addEventListener('fullscreenchange', updateFullscreenButton);
-        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
-        document.addEventListener('msfullscreenchange', updateFullscreenButton);
+        // 应用设置按钮事件
+        applyBtn.addEventListener('click', initExam);
         
         // 初始化
         initExam();
-        updateClock();
         setInterval(updateClock, 1000);
     </script>
 </body>
