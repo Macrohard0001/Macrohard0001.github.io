@@ -26,7 +26,7 @@
             --card-bg: #ffffff;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --border-radius: 12px;
-            --transition: all 0.3 ease;
+            --transition: all 0.3s ease;
         }
         
         .dark-mode {
@@ -48,21 +48,27 @@
             display: flex;
             flex-direction: column;
             transition: var(--transition);
+            padding-top: 70px; /* 为固定顶栏留出空间 */
         }
         
         .container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
         
-        /* 导航栏样式 */
+        /* 导航栏样式 - 固定定位 */
         header {
             background-color: var(--primary-color);
             color: white;
             padding: 1rem 0;
             box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
         }
         
         .navbar {
@@ -97,7 +103,7 @@
             text-decoration: none;
             padding: 5px 10px;
             border-radius: 4px;
-            transition: background-color 0.3;
+            transition: background-color 0.3s;
         }
         
         .nav-links a:hover, .nav-links a.active {
@@ -132,16 +138,16 @@
         /* 主内容区域 */
         .main-content {
             flex: 1;
-            padding: 2rem 0;
+            padding: 1.5rem 0;
         }
         
         .section-title {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         
         .section-title h2 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
@@ -155,16 +161,16 @@
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 2rem;
-            margin-bottom: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             transition: var(--transition);
         }
         
         .exam-config {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         .config-group {
@@ -202,6 +208,7 @@
         
         .time-inputs input {
             text-align: center;
+            width: 70px;
         }
         
         .time-inputs span {
@@ -232,10 +239,10 @@
         .exam-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
             background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: var(--border-radius);
             border-left: 4px solid var(--secondary-color);
         }
@@ -251,7 +258,7 @@
         }
         
         .info-value {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--secondary-color);
         }
@@ -259,9 +266,9 @@
         /* 超大时钟区域 */
         .clock-section {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(155, 89, 182, 0.1));
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: var(--border-radius);
             position: relative;
             overflow: hidden;
@@ -279,34 +286,34 @@
         }
         
         .date {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
             opacity: 0.8;
             font-weight: bold;
             color: var(--primary-color);
         }
         
         .current-time {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
             font-weight: bold;
             color: var(--primary-color);
         }
         
-        /* 超大时钟字体 - 第一处 */
+        /* 超大时钟字体 */
         .clock {
-            font-size: 16rem;
+            font-size: 8rem;
             font-weight: 900;
             color: var(--accent-color);
             text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
             line-height: 1;
-            margin: 1rem 0;
-            padding: 2rem;
+            margin: 0.8rem 0;
+            padding: 1.5rem;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
+            border-radius: 20px;
             border: 4px solid rgba(231, 76, 60, 0.4);
             display: inline-block;
-            min-width: 800px;
+            min-width: 600px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
             box-shadow: 
                 inset 0 4px 8px rgba(255, 255, 255, 0.3),
@@ -333,9 +340,9 @@
         
         .timer-section {
             background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: var(--border-radius);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             border: 1px solid rgba(46, 204, 113, 0.2);
             position: relative;
         }
@@ -357,13 +364,13 @@
         }
         
         .timer-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--primary-color);
         }
         
         .timer-status {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--secondary-color);
             padding: 0.25rem 0.75rem;
@@ -371,26 +378,26 @@
             background: rgba(52, 152, 219, 0.2);
         }
         
-        /* 超大计时器字体 - 第二处 */
+        /* 超大计时器字体 */
         .timer-display {
-            font-size: 8rem;
+            font-size: 5rem;
             font-weight: 900;
             text-align: center;
-            margin: 2rem 0;
+            margin: 1.5rem 0;
             color: var(--success-color);
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
             background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 20px;
+            padding: 1.5rem;
+            border-radius: 15px;
             display: inline-block;
-            min-width: 600px;
+            min-width: 450px;
             border: 3px solid rgba(46, 204, 113, 0.3);
             letter-spacing: 1px;
         }
         
         /* 智能进度条 */
         .progress-container {
-            margin: 2rem 0;
+            margin: 1.5rem 0;
         }
         
         .progress-info {
@@ -414,7 +421,7 @@
             height: 100%;
             border-radius: 10px;
             width: 0%;
-            transition: width 1 cubic-bezier(0.22, 0.61, 0.36, 1);
+            transition: width 1s cubic-bezier(0.22, 0.61, 0.36, 1);
             position: relative;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
@@ -430,7 +437,7 @@
                 transparent, 
                 rgba(255, 255, 255, 0.4), 
                 transparent);
-            animation: shimmer 2 infinite;
+            animation: shimmer 2s infinite;
         }
         
         @keyframes shimmer {
@@ -477,7 +484,7 @@
             background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(231, 76, 60, 0.1));
             border-radius: var(--border-radius);
             display: none;
-            animation: pulse 2 infinite;
+            animation: pulse 2s infinite;
             border-left: 4px solid var(--warning-color);
         }
         
@@ -500,7 +507,7 @@
             color: var(--accent-color);
             background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1));
             border-left: 4px solid var(--accent-color);
-            animation: critical-pulse 1 infinite;
+            animation: critical-pulse 1s infinite;
         }
         
         @keyframes critical-pulse {
@@ -578,7 +585,7 @@
         footer {
             background-color: var(--primary-color);
             color: white;
-            padding: 2rem 0 1rem;
+            padding: 1.5rem 0 1rem;
             margin-top: auto;
         }
         
@@ -592,7 +599,7 @@
         .footer-column {
             flex: 1;
             min-width: 200px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         
         .footer-logo {
@@ -631,7 +638,7 @@
         .footer-column ul li a {
             color: #ddd;
             text-decoration: none;
-            transition: color 0.3;
+            transition: color 0.3s;
         }
         
         .footer-column ul li a:hover {
@@ -649,13 +656,13 @@
         /* 响应式设计 */
         @media (max-width: 1200px) {
             .clock {
-                font-size: 12rem;
-                min-width: 600px;
+                font-size: 6rem;
+                min-width: 500px;
             }
             
             .timer-display {
-                font-size: 6rem;
-                min-width: 450px;
+                font-size: 4rem;
+                min-width: 350px;
             }
         }
         
@@ -670,15 +677,15 @@
             
             /* 响应式调整时钟字体大小 */
             .clock {
-                font-size: 8rem;
-                min-width: 400px;
-                padding: 1.5rem;
+                font-size: 4rem;
+                min-width: 300px;
+                padding: 1rem;
             }
             
             .timer-display {
-                font-size: 4rem;
-                min-width: 300px;
-                padding: 1.5rem;
+                font-size: 3rem;
+                min-width: 250px;
+                padding: 1rem;
             }
             
             .exam-config {
@@ -696,25 +703,41 @@
         
         @media (max-width: 480px) {
             .clock {
-                font-size: 5rem;
-                min-width: 300px;
-                padding: 1rem;
+                font-size: 3rem;
+                min-width: 250px;
+                padding: 0.8rem;
             }
             
             .timer-display {
-                font-size: 3rem;
-                min-width: 250px;
-                padding: 1rem;
+                font-size: 2rem;
+                min-width: 200px;
+                padding: 0.8rem;
+            }
+            
+            body {
+                padding-top: 60px;
+            }
+            
+            header {
+                padding: 0.7rem 0;
             }
         }
         
         /* 全屏模式下的样式 */
         body:fullscreen .clock {
-            font-size: 20rem;
+            font-size: 12rem;
         }
         
         body:fullscreen .timer-display {
-            font-size: 12rem;
+            font-size: 8rem;
+        }
+        
+        body:fullscreen {
+            padding-top: 0;
+        }
+        
+        body:fullscreen header {
+            position: static;
         }
     </style>
 </head>
@@ -757,7 +780,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>智能考试时钟</h2>
-                <p>动态颜色进度条，直观显示考试进度</p>
+                <p>专为高中考试设计</p>
             </div>
             
             <div class="exam-clock-container">
@@ -963,12 +986,12 @@
             'chinese': { name: '语文', code: 'GAOKAO-CHN', duration: 150, warning: '请检查作文是否完成' },
             'math': { name: '数学', code: 'GAOKAO-MATH', duration: 120, warning: '请仔细检查计算题' },
             'english': { name: '英语', code: 'GAOKAO-ENG', duration: 120, warning: '请检查作文和阅读理解' },
-            'physics': { name: '物理', code: 'GAOKAO-PHY', duration: 90, warning: '请检查实验题和计算题' },
-            'chemistry': { name: '化学', code: 'GAOKAO-CHEM', duration: 90, warning: '请检查化学方程式和计算题' },
-            'biology': { name: '生物', code: 'GAOKAO-BIO', duration: 90, warning: '请检查遗传题和实验题' },
-            'politics': { name: '政治', code: 'GAOKAO-POL', duration: 90, warning: '请检查论述题和材料分析' },
-            'history': { name: '历史', code: 'GAOKAO-HIS', duration: 90, warning: '请检查材料解析和论述题' },
-            'geography': { name: '地理', code: 'GAOKAO-GEO', duration: 90, warning: '请检查地图题和综合题' },
+            'physics': { name: '物理', code: 'GAOKAO-PHY', duration: 75, warning: '请检查实验题和计算题' },
+            'chemistry': { name: '化学', code: 'GAOKAO-CHEM', duration: 75, warning: '请检查化学方程式和计算题' },
+            'biology': { name: '生物', code: 'GAOKAO-BIO', duration: 75, warning: '请检查遗传题和实验题' },
+            'politics': { name: '政治', code: 'GAOKAO-POL', duration: 75, warning: '请检查论述题和材料分析' },
+            'history': { name: '历史', code: 'GAOKAO-HIS', duration: 75, warning: '请检查材料解析和论述题' },
+            'geography': { name: '地理', code: 'GAOKAO-GEO', duration: 75, warning: '请检查地图题和综合题' },
             'custom': { name: '自定义', code: 'CUSTOM', duration: 120, warning: '请合理安排剩余时间' }
         };
         
@@ -1048,6 +1071,18 @@
             }
         }
         
+        // 修复：格式化剩余时间（毫秒转时分秒）
+        function formatRemainingTime(ms) {
+            // 确保不会出现负数
+            if (ms < 0) ms = 0;
+            
+            const hours = Math.floor(ms / (1000 * 60 * 60));
+            const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+            
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
         // 更新时钟
         function updateClock() {
             const now = new Date();
@@ -1064,10 +1099,10 @@
                 const timeDiff = now.getTime() - currentExam.startTime.getTime();
                 
                 if (timeDiff < 0) {
-                    // 考试未开始
+                    // 考试未开始 - 显示距离开始的时间
                     timerStatusElement.textContent = "未开始";
                     examStatusElement.textContent = "未开始";
-                    timerElement.textContent = "--:--:--";
+                    timerElement.textContent = formatRemainingTime(-timeDiff);
                     progressElement.style.width = "0%";
                     progressPercentElement.textContent = "0%";
                     progressPercentTextElement.textContent = "0%";
@@ -1079,7 +1114,7 @@
                     
                     // 计算剩余时间
                     const remainingTime = currentExam.duration - timeDiff;
-                    timerElement.textContent = formatTime(new Date(remainingTime));
+                    timerElement.textContent = formatRemainingTime(remainingTime);
                     
                     // 更新进度条
                     const progressPercent = (timeDiff / currentExam.duration) * 100;
