@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一个高中生的MC梦 - Macrohard Studio</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="https://github.com/Macrohard0001-m01/Macrohard0001-m01.github.io/blob/main/images/macrohard_icon_day.png?raw=true" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
             background: #fafafa;
+            padding-top: 70px; /* 防止顶栏遮挡内容 */
         }
         .page-container {
             max-width: 700px;
@@ -135,85 +137,10 @@
                 padding: 1rem;
             }
         }
-        
-        /* 导航栏样式（从你其他页面复制） */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            margin-right: 0.5rem;
-        }
-        .nav-links {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .nav-links li {
-            margin: 0 0.5rem;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            padding: 0.5rem 0.8rem;
-            border-radius: 4px;
-            transition: background 0.3s;
-        }
-        .nav-links a:hover,
-        .nav-links a.active {
-            background: #f0f0f0;
-            color: #5b8c5a;
-        }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #666;
-        }
-        .hamburger {
-            display: none;
-            cursor: pointer;
-        }
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-            }
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: white;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                z-index: 1000;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
+    <!-- 导航栏 - 与首页完全一致 -->
     <header>
         <div class="container">
             <nav class="navbar">
@@ -225,9 +152,12 @@
                     <li><a href="index.html">首页</a></li>
                     <li><a href="software.html">软件</a></li>
                     <li><a href="music.html">音乐</a></li>
-                    <li><a href="minecraft.html" class="active">MC梦想</a></li>
-                    <li><a href="exam-clock.html">考试时钟</a></li>
                     <li><a href="speedtest.html">测速工具</a></li>
+                    <li><a href="exam-clock.html">考试时钟</a></li>
+                    <li><a href="reserved3.html">预留3</a></li>
+                    <li><a href="reserved4.html">预留4</a></li>
+                    <!-- MC页面链接，active状态 -->
+                    <li><a href="minecraft.html" class="active">MC梦想</a></li>
                     <li><a href="sentiment.html">情怀与初衷</a></li>
                     <li><a href="about.html">关于</a></li>
                 </ul>
@@ -244,7 +174,6 @@
     </header>
 
     <div class="page-container">
-        <!-- 其余内容不变 -->
         <div class="header">
             <h1>🎓 一个高中生的MC梦</h1>
             <p>为了游玩与学习开发（主要还是游玩 😄）</p>
@@ -374,30 +303,6 @@
         </div>
     </footer>
 
-    <script>
-        // 导航栏移动端菜单切换
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (hamburger && navLinks) {
-            hamburger.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-            });
-        }
-        
-        // 主题切换
-        const themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('dark-theme');
-                const icon = themeToggle.querySelector('i');
-                if (document.body.classList.contains('dark-theme')) {
-                    icon.className = 'fas fa-sun';
-                } else {
-                    icon.className = 'fas fa-moon';
-                }
-            });
-        }
-    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>
